@@ -580,6 +580,8 @@ export class BarkoderViewAndroid extends View {
         return this.bkdView.config.getDecoderConfig().COOP25.enabled;
       case BarkoderConstants.DecoderType.Dotcode:
         return this.bkdView.config.getDecoderConfig().Dotcode.enabled;
+      case BarkoderConstants.DecoderType.IDDocument:
+        return this.bkdView.config.getDecoderConfig().IDDocument.enabled;
     }
   }
 
@@ -614,6 +616,7 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.config.getDecoderConfig().Datalogic25.enabled = false;
     this.bkdView.config.getDecoderConfig().COOP25.enabled = false;
     this.bkdView.config.getDecoderConfig().Dotcode.enabled = false;
+    this.bkdView.config.getDecoderConfig().IDDocument.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -693,6 +696,9 @@ export class BarkoderViewAndroid extends View {
           break;
         case BarkoderConstants.DecoderType.Dotcode:
           this.bkdView.config.getDecoderConfig().Dotcode.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.IDDocument:
+          this.bkdView.config.getDecoderConfig().IDDocument.enabled = true;
           break;
         default:
           break;

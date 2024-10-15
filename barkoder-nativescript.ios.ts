@@ -3,7 +3,7 @@ import { View } from "@nativescript/core";
 import { ios } from "@nativescript/core/application";
 
 export class BarkoderViewIOS extends View {
-  public bkdView: BarkoderView;
+  public bkdView: any;
   public licenseKeyProperty: any;
   private _licenseKey: string;
 
@@ -533,6 +533,8 @@ export class BarkoderViewIOS extends View {
         return this.bkdView.config.decoderConfig.coop25.enabled;
       case BarkoderConstants.DecoderType.Dotcode:
         return this.bkdView.config.decoderConfig.dotcode.enabled;
+      case BarkoderConstants.DecoderType.IDDocument:
+        return this.bkdView.config.decoderConfig.idDocument.enabled;
     }
   }
 
@@ -568,6 +570,7 @@ export class BarkoderViewIOS extends View {
     this.bkdView.config.decoderConfig.coop25.enabled = false;
     this.bkdView.config.decoderConfig.dotcode.enabled = false;
     this.bkdView.config.decoderConfig.code32.enabled = false;
+    this.bkdView.config.decoderConfig.idDocument.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -647,6 +650,9 @@ export class BarkoderViewIOS extends View {
           break;
         case BarkoderConstants.DecoderType.Dotcode:
           this.bkdView.config.decoderConfig.dotcode.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.IDDocument:
+          this.bkdView.config.decoderConfig.idDocument.enabled = true;
           break;
         default:
           break;

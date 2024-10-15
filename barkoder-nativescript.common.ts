@@ -48,7 +48,8 @@ export enum DecoderType {
   COOP25 = 24,
   Code32 = 25,
   Telepen = 26,
-  Dotcode = 27
+  Dotcode = 27,
+  IDDocument = 28
 }
 
 export enum FormattingType {
@@ -181,6 +182,7 @@ export class DekoderConfig {
   code32?: BarcodeConfig;
   telepen?: BarcodeConfig;
   dotcode?: BarcodeConfig;
+  idDocument?: BarcodeConfig;
   general?: GeneralSettings;
 
   constructor(config: Partial<DekoderConfig>) {
@@ -217,6 +219,7 @@ export class DekoderConfig {
       'Code 32': this.code32?.toMap(),   
       'Telepen': this.telepen?.toMap(), 
       'Dotcode': this.dotcode?.toMap(),
+      'IDDocument': this.dotcode?.toMap(),
       'general': this.general?.toMap()
     }
 

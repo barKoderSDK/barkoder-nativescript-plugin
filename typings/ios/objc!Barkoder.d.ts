@@ -69,7 +69,8 @@ declare const enum BarcodeType {
 
 	T_Telepen = 26,
 
-	T_Dotcode = 27
+	T_Dotcode = 27,
+	T_IDDocument = 28
 }
 
 declare var BarkoderVersionNumber: number;
@@ -202,6 +203,8 @@ declare class Config extends NSObject {
 	readonly datalogic25: Datalogic25Config;
 
 	readonly datamatrix: DatamatrixConfig;
+
+	readonly idDocument: IDDocumentConfig;
 
 	decodingSpeed: DecodingSpeed;
 
@@ -403,6 +406,13 @@ declare class DotcodeConfig extends SpecificConfig {
 	static alloc(): DotcodeConfig; // inherited from NSObject
 
 	static new(): DotcodeConfig; // inherited from NSObject
+}
+
+declare class IDDocumentConfig extends SpecificConfig {
+
+	static alloc(): IDDocumentConfig; // inherited from NSObject
+
+	static new(): IDDocumentConfig; // inherited from NSObject
 }
 
 declare class Ean13Config extends SpecificConfig {

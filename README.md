@@ -33,7 +33,7 @@ Our support is completely free for integration or testing purposes and granted t
 
 # Installation Guide for barKoder's Nativescript Barcode Reader SDK
 
-This is a guide for the barKoder [React Native Plugin](https://barkoder.com/flutter-and-react). Follow these simple steps below to use the barkoder-react-native package in your React project:
+This is a guide for the barKoder [NativeScript Plugin]
 
 ## 1. Prepare environment
 Install the dependencies and [setup your environment](https://docs.nativescript.org/setup)
