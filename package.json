@@ -1,6 +1,6 @@
 {
 	"name": "barkoder-nativescript",
-	"version": "1.5.1",
+	"version": "1.5.7",
 	"description": "Nativescript support for Barkoder - a Barcode Scanner SDK for the modern enterprise.",
 	"main": "barkoder-nativescript",
 	"typings": "index.d.ts", 

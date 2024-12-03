@@ -376,6 +376,61 @@ export class DatamatrixBarcodeConfig {
   }
 }
 
+
+  export class QRBarcodeConfig {
+    enabled?: boolean;
+    dpmMode?: number;
+    private minLength?: number;
+    private maxLength?: number;
+
+    constructor(config: Partial<QRBarcodeConfig>) {
+      Object.assign(this, config);
+    }
+
+    toMap() {
+      let map: { [key: string]: any } = {
+        "enabled": this.enabled,
+        "dpmMode": this.dpmMode,
+        "minimumLength": this.minLength,
+        "maximumLength": this.maxLength,
+      }
+
+      return map;
+    }
+
+    setLengthRange(minLength: number, maxLength: number) {
+      this.minLength = minLength;
+      this.maxLength = maxLength;
+    }
+  }
+
+  export class QRMicroBarcodeConfig {
+    enabled?: boolean;
+    dpmMode?: number;
+    private minLength?: number;
+    private maxLength?: number;
+
+    constructor(config: Partial<QRMicroBarcodeConfig>) {
+      Object.assign(this, config);
+    }
+
+    toMap() {
+      let map: { [key: string]: any } = {
+        "enabled": this.enabled,
+        "dpmMode": this.dpmMode,
+        "minimumLength": this.minLength,
+        "maximumLength": this.maxLength,
+      }
+
+      return map;
+    }
+
+    setLengthRange(minLength: number, maxLength: number) {
+      this.minLength = minLength;
+      this.maxLength = maxLength;
+    }
+  }
+
 export class GeneralSettings {
   threadsLimit?: number;
   decodingSpeed?: DecodingSpeed;

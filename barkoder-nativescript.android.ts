@@ -2,6 +2,9 @@ import { BarkoderConstants } from "./barkoder-nativescript.common";
 import * as application from "@nativescript/core/application";
 import { View } from "@nativescript/core";
 import { BarkoderView } from "./barkoder-nativescript.common";
+import { ImageSource } from '@nativescript/core';
+
+
 
 const androidSupport =
   global.androidx && global.androidx.appcompat
@@ -52,6 +55,35 @@ export class BarkoderViewAndroid extends View {
       },
     });
     this.bkdView.startScanning(resultCallback);
+  }
+
+
+  scanImage(
+    base64Image: string,
+    BarkoderResultCallback: BarkoderConstants.BarkoderResultCallback
+  ): void {
+    const BarkoderHelper = com.barkoder.BarkoderHelper;
+
+    // Convert base64 string to bitmap
+    const bitmap = ImageSource.fromBase64Sync(base64Image).android;
+
+    // Create an instance of BarkoderResultCallback
+    const resultCallback = new com.barkoder.interfaces.BarkoderResultCallback({
+      scanningFinished: (
+        results: any[],
+        thumbnails: any[],
+        resultImage: any
+      ) => {
+        BarkoderResultCallback.scanningFinished(
+          results,
+          thumbnails,
+          resultImage
+        );
+      },
+    });
+
+    // Pass the result callback correctly to scanImage
+    BarkoderHelper.scanImage(bitmap, this.bkdView.config, resultCallback, context);
   }
 
   /**
@@ -122,6 +154,19 @@ export class BarkoderViewAndroid extends View {
   setLocationLineColor(locationLineColor: string): void {
     const locationColor = this.hexToAndroidColor(locationLineColor);
     this.bkdView.config.setLocationLineColor(locationColor);
+  }
+
+
+  setIdDocumentMasterChecksumEnabled(enabled: boolean): void {
+    if(enabled){
+      this.bkdView.config.getDecoderConfig().IDDocument.masterChecksumType = com.barkoder.Barkoder.StandardChecksumType.Enabled
+    } else {
+      this.bkdView.config.getDecoderConfig().IDDocument.masterChecksumType = com.barkoder.Barkoder.StandardChecksumType.Disabled
+    }
+  }
+
+  isIdDocumentMasterChecksumEnabled(): boolean {
+    return this.bkdView.config.getDecoderConfig().IDDocument.masterChecksumType === com.barkoder.Barkoder.StandardChecksumType.Enabled;
   }
 
   /**
@@ -989,6 +1034,26 @@ export class BarkoderViewAndroid extends View {
    */
   setDatamatrixDpmModeEnabled(dpmModeEnabled: boolean): void {
     this.bkdView.config.getDecoderConfig().Datamatrix.dpmMode = dpmModeEnabled;
+  }
+
+  setQRDpmModeEnabled(dpmModeEnabled: boolean): void {
+    this.bkdView.config.getDecoderConfig().QR.dpmMode = dpmModeEnabled;
+  }
+
+  setQRMicroDpmModeEnabled(dpmModeEnabled: boolean): void {
+    this.bkdView.config.getDecoderConfig().QRMicro.dpmMode = dpmModeEnabled;
+  }
+
+  isDatamatrixDpmModeEnabled(): any {
+    return this.bkdView.config.getDecoderConfig().Datamatrix.dpmMode;
+  }
+
+  isQRDpmModeEnabled() : any {
+    return this.bkdView.config.getDecoderConfig().QR.dpmMode
+  }
+
+  isQRMicroDpmModeEnabled() : any {
+    return this.bkdView.config.getDecoderConfig().QRMicro.dpmMode
   }
 
   /**

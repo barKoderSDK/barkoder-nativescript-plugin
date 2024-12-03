@@ -22,6 +22,34 @@ export class BarkoderViewIOS extends View {
     this.bkdView.startScanningError(resultDelegate);
   }
 
+  scanImage(base64Image: string, callback: BarkoderConstants.BarkoderResultCallback): void {
+
+    // Convert Base64 to UIImage
+    const uiImage = this.convertBase64ToUIImage(base64Image);
+    const resultDelegate = new BarkoderViewWraper(callback);
+    ios.delegate = resultDelegate;
+    BarkoderHelper.scanImageBkdConfigResultDelegate(uiImage,this.bkdView.config, resultDelegate)
+  }
+
+  convertBase64ToUIImage(base64String: string): UIImage | null {
+    if (!base64String) {
+      console.warn('Invalid Base64 string provided');
+      return null;
+    }
+
+    // Decode the Base64 string to NSData
+    const imageData = NSData.alloc().initWithBase64EncodedStringOptions(base64String, 0); // Using 0 as the option
+
+    if (!imageData) {
+      console.warn('Failed to decode Base64 string to NSData');
+      return null;
+    }
+
+    // Create a UIImage from NSData
+    const uiImage = UIImage.imageWithData(imageData);
+    return uiImage;
+  }
+
   /**
    * Halts the barcode scanning process, stopping the camera from capturing and processing barcode information
    */
@@ -156,6 +184,18 @@ export class BarkoderViewIOS extends View {
    */
   setRegionOfInterestVisible(enabled: boolean): void {
     this.bkdView.config.regionOfInterestVisible = enabled;
+  }
+
+  setIdDocumentMasterChecksumEnabled(enabled: boolean): void {
+    if (enabled) {
+      this.bkdView.config.decoderConfig.idDocument.masterChecksum = 1
+    } else {
+      this.bkdView.config.decoderConfig.idDocument.masterChecksum = 0
+    }
+  }
+
+  isIdDocumentMasterChecksumEnabled(): boolean {
+    return this.bkdView.config.decoderConfig.idDocument.masterChecksum === 1
   }
 
   /**
@@ -981,6 +1021,34 @@ export class BarkoderViewIOS extends View {
     } else if (dpmModeEnabled == false) {
       this.bkdView.config.decoderConfig.datamatrix.dpmMode = 0;
     }
+  }
+
+  setQRDpmModeEnabled(dpmModeEnabled: boolean): void {
+    if (dpmModeEnabled) {
+      this.bkdView.config.decoderConfig.qr.dpmMode = 1;
+    } else if (dpmModeEnabled == false) {
+      this.bkdView.config.decoderConfig.qr.dpmMode = 0;
+    }
+  }
+
+  setQRMicroDpmModeEnabled(dpmModeEnabled: boolean): void {
+    if (dpmModeEnabled) {
+      this.bkdView.config.decoderConfig.qrMicro.dpmMode = 1;
+    } else if (dpmModeEnabled == false) {
+      this.bkdView.config.decoderConfig.qrMicro.dpmMode = 0;
+    }
+  }
+
+  isDatamatrixDpmModeEnabled(): any {
+    return this.bkdView.config.decoderConfig.datamatrix.dpmMode;
+  }
+
+  isQRDpmModeEnabled(): any {
+    return this.bkdView.config.decoderConfig.qr.dpmMode
+  }
+
+  isQRMicroDpmModeEnabled(): any {
+    return this.bkdView.config.decoderConfig.qrMicro.dpmMode
   }
 
   /**
