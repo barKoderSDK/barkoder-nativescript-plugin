@@ -49,7 +49,10 @@ export enum DecoderType {
   Code32 = 25,
   Telepen = 26,
   Dotcode = 27,
-  IDDocument = 28
+  IDDocument = 28,
+  Databar14 = 29,
+  DatabarLimited = 30,
+  DatabarExpanded = 31
 }
 
 export enum FormattingType {
@@ -66,8 +69,10 @@ export enum DecodingSpeed {
 }
 
 export enum BarkoderResolution {
-  NORMAL = 'HD',
-  HIGH = 'Full HD'
+  HD = 'HD',
+  FHD = 'Full HD',
+  UHD = 'Ultra HD'
+
 }
 
 export enum MsiChecksumType {
@@ -183,6 +188,9 @@ export class DekoderConfig {
   telepen?: BarcodeConfig;
   dotcode?: BarcodeConfig;
   idDocument?: BarcodeConfig;
+  databar14?: BarcodeConfig;
+  databarExpanded?: BarcodeConfig;
+  databarLimited?: BarcodeConfig;
   general?: GeneralSettings;
 
   constructor(config: Partial<DekoderConfig>) {
@@ -220,6 +228,9 @@ export class DekoderConfig {
       'Telepen': this.telepen?.toMap(), 
       'Dotcode': this.dotcode?.toMap(),
       'IDDocument': this.dotcode?.toMap(),
+      'Databar 14': this.databar14?.toMap(),
+      'Databar Expanded': this.databarExpanded?.toMap(),
+      'Databar Limited': this.databarLimited?.toMap(),
       'general': this.general?.toMap()
     }
 

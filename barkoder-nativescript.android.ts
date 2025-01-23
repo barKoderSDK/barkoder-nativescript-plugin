@@ -423,15 +423,22 @@ export class BarkoderViewAndroid extends View {
   setBarkoderResolution(
     barkoderResolution: BarkoderConstants.BarkoderResolution
   ): void {
-    if (barkoderResolution == BarkoderConstants.BarkoderResolution.NORMAL) {
+    if (barkoderResolution == BarkoderConstants.BarkoderResolution.HD) {
       this.bkdView.config.setBarkoderResolution(
-        com.barkoder.enums.BarkoderResolution.Normal
+        com.barkoder.enums.BarkoderResolution.HD
       );
     } else if (
-      barkoderResolution == BarkoderConstants.BarkoderResolution.HIGH
+      barkoderResolution == BarkoderConstants.BarkoderResolution.FHD
     ) {
       this.bkdView.config.setBarkoderResolution(
-        com.barkoder.enums.BarkoderResolution.HIGH
+        com.barkoder.enums.BarkoderResolution.FHD
+      );
+    }
+    else if (
+      barkoderResolution == BarkoderConstants.BarkoderResolution.UHD
+    ) {
+      this.bkdView.config.setBarkoderResolution(
+        com.barkoder.enums.BarkoderResolution.UHD
       );
     }
   }
@@ -662,6 +669,9 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.config.getDecoderConfig().COOP25.enabled = false;
     this.bkdView.config.getDecoderConfig().Dotcode.enabled = false;
     this.bkdView.config.getDecoderConfig().IDDocument.enabled = false;
+    this.bkdView.config.getDecoderConfig().Databar14.enabled = false;
+    this.bkdView.config.getDecoderConfig().DatabarLimited.enabled = false;
+    this.bkdView.config.getDecoderConfig().DatabarExpanded.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -744,6 +754,18 @@ export class BarkoderViewAndroid extends View {
           break;
         case BarkoderConstants.DecoderType.IDDocument:
           this.bkdView.config.getDecoderConfig().IDDocument.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.Codabar:
+          this.bkdView.config.getDecoderConfig().Codabar.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.Databar14:
+          this.bkdView.config.getDecoderConfig().Databar14.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.DatabarExpanded:
+          this.bkdView.config.getDecoderConfig().DatabarExpanded.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.DatabarLimited:
+          this.bkdView.config.getDecoderConfig().DatabarLimited.enabled = true;
           break;
         default:
           break;
@@ -1143,6 +1165,73 @@ export class BarkoderViewAndroid extends View {
   setEnableVINRestrictions(vinRestrictionsEnabled: boolean): void {
     this.bkdView.config.getDecoderConfig().enableVINRestrictions = vinRestrictionsEnabled;
   }
+
+  isEnabledComposite(): any {
+    return this.bkdView.config.getDecoderConfig().enableComposite;
+  }
+
+  /**
+   * Sets whether Vehicle Identification Number (VIN) restrictions are enabled
+   */
+  setEnabledComposite(enableComposited: number): void {
+    this.bkdView.config.getDecoderConfig().enableComposite = enableComposited;
+  }
+
+  setScanningIndicatorColor(scanningIndicatorColor : string) : void {
+    const scanningIndicatorColorHex = this.hexToAndroidColor(scanningIndicatorColor);
+    this.bkdView.config.setScanningIndicatorColor(scanningIndicatorColorHex);
+  }
+
+  getScanningIndicatorColorHex() : any {
+    return this.bkdView.config.getScanningIndicatorColor();
+  }
+
+  setScanningIndicatorWidth(scanningIndicatorWidth : number) : void {
+    this.bkdView.config.setScanningIndicatorWidth(scanningIndicatorWidth);
+  }
+
+  getScanningIndicatorWidth() : any {
+    return this.bkdView.config.getScanningIndicatorWidth();
+  }
+
+  setScanningIndicatorAnimation(indicatorMode : number): void {
+    this.bkdView.config.setScanningIndicatorAnimation(indicatorMode);
+  }
+
+  getScanningIndicatorAnimation() : any {
+    return this.bkdView.config.getScanningIndicatorAnimation();
+  }
+
+  setScanningIndicatorAlwaysVisible(enabled: boolean) : void {
+    this.bkdView.config.setScanningIndicatorAlwaysVisible(enabled);
+  }
+
+  isScanningIndicatorAlwaysVisible() : any {
+    return this.bkdView.config.isScanningIndicatorAlwaysVisible();
+  }
+
+  setUPCEexpandToUPCA(enabled: boolean) : void {
+    this.bkdView.config.getDecoderConfig().UpcE.expandToUPCA = enabled;
+  }
+
+  setUPCE1expandToUPCA(enabled: boolean): void {
+    this.bkdView.config.getDecoderConfig().UpcE1.expandToUPCA = enabled;
+  }
+
+  setCustomOption(string : string, mode: number): void {
+    com.barkoder.Barkoder.SetCustomOption(this.bkdView.config.getDecoderConfig(), string, mode);
+  }
+
+  setDynamicExposure(mode : number) : void {
+    this.bkdView.setDynamicExposure(mode);
+  }
+
+  setCentricFocusAndExposure(enabled: boolean): void {
+    this.bkdView.setCentricFocusAndExposure(enabled);
+  }
+
+
+
 
   setLicenseKey(licenseKey: string): void {
     this.bkdView.config = new com.barkoder.BarkoderConfig(

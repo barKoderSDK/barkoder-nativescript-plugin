@@ -396,12 +396,17 @@ export class BarkoderViewIOS extends View {
   setBarkoderResolution(
     barkoderResolution: BarkoderConstants.BarkoderResolution
   ): void {
-    if (barkoderResolution === BarkoderConstants.BarkoderResolution.NORMAL) {
+    if (barkoderResolution === BarkoderConstants.BarkoderResolution.HD) {
       this.bkdView.config.barkoderResolution = 0;
     } else if (
-      barkoderResolution === BarkoderConstants.BarkoderResolution.HIGH
+      barkoderResolution === BarkoderConstants.BarkoderResolution.FHD
     ) {
       this.bkdView.config.barkoderResolution = 1;
+    }
+    else if (
+      barkoderResolution === BarkoderConstants.BarkoderResolution.UHD
+    ) {
+      this.bkdView.config.barkoderResolution = 2;
     }
   }
 
@@ -611,6 +616,9 @@ export class BarkoderViewIOS extends View {
     this.bkdView.config.decoderConfig.dotcode.enabled = false;
     this.bkdView.config.decoderConfig.code32.enabled = false;
     this.bkdView.config.decoderConfig.idDocument.enabled = false;
+    this.bkdView.config.decoderConfig.databar14.enabled = false;
+    this.bkdView.config.decoderConfig.databarLimited.enabled = false;
+    this.bkdView.config.decoderConfig.databarExpanded.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -693,6 +701,18 @@ export class BarkoderViewIOS extends View {
           break;
         case BarkoderConstants.DecoderType.IDDocument:
           this.bkdView.config.decoderConfig.idDocument.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.Codabar:
+          this.bkdView.config.decoderConfig.codabar.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.Databar14:
+          this.bkdView.config.decoderConfig.databar14.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.DatabarExpanded:
+          this.bkdView.config.decoderConfig.databarExpanded.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.DatabarLimited:
+          this.bkdView.config.decoderConfig.databarLimited.enabled = true;
           break;
         default:
           break;
@@ -1151,6 +1171,62 @@ export class BarkoderViewIOS extends View {
     this.bkdView.config.decoderConfig.enableVINRestrictions = vinRestrictionsEnabled;
   }
 
+  isEnabledComposite(): any {
+    return this.bkdView.config.decoderConfig.enableComposite;
+  }
+
+  /**
+   * Sets whether Vehicle Identification Number (VIN) restrictions are enabled
+   */
+  setEnabledComposite(enableComposited: number): void {
+    this.bkdView.config.decoderConfig.enableComposite = enableComposited;
+  }
+
+  setScanningIndicatorColor(scanningIndicatorColor: string): void {
+    const uiColor = this.hexToUIColor(scanningIndicatorColor);
+    this.bkdView.config.scanningIndicatorColor = uiColor;
+  }
+
+  getScanningIndicatorColorHex(): any {
+    return this.bkdView.config.scanningIndicatorColor
+  }
+
+  setScanningIndicatorWidth(scanningIndicatorWidth: number): void {
+    this.bkdView.config.scanningIndicatorWidth = scanningIndicatorWidth;
+  }
+
+  getScanningIndicatorWidth(): any {
+    return this.bkdView.config.scanningIndicatorWidth
+  }
+
+  setScanningIndicatorAnimation(indicatorMode: number): void {
+    this.bkdView.config.scanningIndicatorAnimation = indicatorMode;
+  }
+
+  getScanningIndicatorAnimation(): any {
+    return this.bkdView.config.scanningIndicatorAnimation
+  }
+
+  setScanningIndicatorAlwaysVisible(enabled: boolean): void {
+    this.bkdView.config.scanningIndicatorAlwaysVisible = enabled;
+  }
+
+  isScanningIndicatorAlwaysVisible(): any {
+    return this.bkdView.config.scanningIndicatorAlwaysVisible;
+  }
+
+  setUPCEexpandToUPCA(enabled: boolean): void {
+    this.bkdView.config.decoderConfig.upcE.expandToUPCA = enabled
+  }
+
+  setUPCE1expandToUPCA(enabled: boolean): void {
+    this.bkdView.config.decoderConfig.upcE1.expandToUPCA = enabled
+  }
+
+  setCustomOption(string: string, mode: number): void {
+    this.bkdView.config.decoderConfig.setcustomOptionValue(string, mode)
+  }
+
   setLicenseKey(licenseKey: string): void {
     const config = new BarkoderConfig({
       licenseKey: licenseKey,
@@ -1159,6 +1235,14 @@ export class BarkoderViewIOS extends View {
 
     this.bkdView.config = config;
   }
+
+  setDynamicExposure(number: number): void {
+    this.bkdView.setDynamicExposure(number);
+  }
+  setCentricFocusAndExposure(enabled : boolean) : void {
+    this.bkdView.setCentricFocusAndExposure(enabled);
+  }
+
 
   /**
    * Configures the Barkoder functionality based on the provided configuration
