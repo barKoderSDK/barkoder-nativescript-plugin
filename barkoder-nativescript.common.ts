@@ -52,7 +52,15 @@ export enum DecoderType {
   IDDocument = 28,
   Databar14 = 29,
   DatabarLimited = 30,
-  DatabarExpanded = 31
+  DatabarExpanded = 31,
+  PostalIMB = 32,
+  Postnet = 33,
+  Planet = 34,
+  AustralianPost = 35,
+  RoyalMail = 36,
+  KIX = 37,
+  JapanesePost = 38
+
 }
 
 export enum FormattingType {
@@ -95,6 +103,11 @@ export enum Code39ChecksumType {
   Disabled = 0,
   Enabled = 1
 }
+
+  export enum BarkoderCameraPosition {
+    Back = 0,
+    Front = 1
+  }
 
 export class Common extends Observable {
 
@@ -191,6 +204,13 @@ export class DekoderConfig {
   databar14?: BarcodeConfig;
   databarExpanded?: BarcodeConfig;
   databarLimited?: BarcodeConfig;
+  postalIMB?: BarcodeConfig;
+  postnet?: BarcodeConfig;
+  planet?: BarcodeConfig;
+  australianPost?: BarcodeConfig;
+  royalMail?: BarcodeConfig;
+  kix?: BarcodeConfig;
+  japanasePost?: BarcodeConfig;
   general?: GeneralSettings;
 
   constructor(config: Partial<DekoderConfig>) {
@@ -231,6 +251,13 @@ export class DekoderConfig {
       'Databar 14': this.databar14?.toMap(),
       'Databar Expanded': this.databarExpanded?.toMap(),
       'Databar Limited': this.databarLimited?.toMap(),
+      'Postal IMB': this.postalIMB?.toMap(),
+      'Postnet': this.postnet?.toMap(),
+      'Planet': this.planet?.toMap(),
+      'Australian Post': this.australianPost?.toMap(),
+      'Royal Mail': this.royalMail?.toMap(),
+      'KIX': this.kix?.toMap(),
+      'Japanase Post': this.japanasePost?.toMap(),
       'general': this.general?.toMap()
     }
 

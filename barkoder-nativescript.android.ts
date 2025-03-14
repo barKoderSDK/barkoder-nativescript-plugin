@@ -634,6 +634,26 @@ export class BarkoderViewAndroid extends View {
         return this.bkdView.config.getDecoderConfig().Dotcode.enabled;
       case BarkoderConstants.DecoderType.IDDocument:
         return this.bkdView.config.getDecoderConfig().IDDocument.enabled;
+      case BarkoderConstants.DecoderType.Databar14:
+        return this.bkdView.config.getDecoderConfig().Databar14.enabled;
+      case BarkoderConstants.DecoderType.DatabarLimited:
+        return this.bkdView.config.getDecoderConfig().DatabarLimited.enabled;
+      case BarkoderConstants.DecoderType.DatabarExpanded:
+        return this.bkdView.config.getDecoderConfig().DatabarExpanded.enabled;
+      case BarkoderConstants.DecoderType.PostalIMB:
+        return this.bkdView.config.getDecoderConfig().PostalIMB.enabled;
+      case BarkoderConstants.DecoderType.Planet:
+        return this.bkdView.config.getDecoderConfig().Planet.enabled;
+      case BarkoderConstants.DecoderType.Postnet:
+        return this.bkdView.config.getDecoderConfig().Postnet.enabled;
+      case BarkoderConstants.DecoderType.AustralianPost:
+        return this.bkdView.config.getDecoderConfig().AustralianPost.enabled;
+      case BarkoderConstants.DecoderType.RoyalMail:
+        return this.bkdView.config.getDecoderConfig().RoyalMail.enabled;
+      case BarkoderConstants.DecoderType.KIX:
+        return this.bkdView.config.getDecoderConfig().KIX.enabled;
+      case BarkoderConstants.DecoderType.JapanesePost:
+        return this.bkdView.config.getDecoderConfig().JapanesePost.enabled;
     }
   }
 
@@ -672,6 +692,13 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.config.getDecoderConfig().Databar14.enabled = false;
     this.bkdView.config.getDecoderConfig().DatabarLimited.enabled = false;
     this.bkdView.config.getDecoderConfig().DatabarExpanded.enabled = false;
+    this.bkdView.config.getDecoderConfig().PostalIMB.enabled = false;
+    this.bkdView.config.getDecoderConfig().Postnet.enabled = false;
+    this.bkdView.config.getDecoderConfig().Planet.enabled = false;
+    this.bkdView.config.getDecoderConfig().AustralianPost.enabled = false;
+    this.bkdView.config.getDecoderConfig().RoyalMail.enabled = false;
+    this.bkdView.config.getDecoderConfig().KIX.enabled = false;
+    this.bkdView.config.getDecoderConfig().JapanesePost.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -766,6 +793,27 @@ export class BarkoderViewAndroid extends View {
           break;
         case BarkoderConstants.DecoderType.DatabarLimited:
           this.bkdView.config.getDecoderConfig().DatabarLimited.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.PostalIMB:
+          this.bkdView.config.getDecoderConfig().PostalIMB.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.Postnet:
+          this.bkdView.config.getDecoderConfig().Postnet.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.Planet:
+          this.bkdView.config.getDecoderConfig().Planet.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.AustralianPost:
+          this.bkdView.config.getDecoderConfig().AustralianPost.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.RoyalMail:
+          this.bkdView.config.getDecoderConfig().RoyalMail.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.KIX:
+          this.bkdView.config.getDecoderConfig().KIX.enabled = true;
+          break;
+        case BarkoderConstants.DecoderType.JapanesePost:
+          this.bkdView.config.getDecoderConfig().JapanesePost.enabled = true;
           break;
         default:
           break;
@@ -1228,6 +1276,19 @@ export class BarkoderViewAndroid extends View {
 
   setCentricFocusAndExposure(enabled: boolean): void {
     this.bkdView.setCentricFocusAndExposure(enabled);
+  }
+
+  setVideoStabilization(enabled: boolean) : void {
+    this.bkdView.setVideoStabilization(enabled);
+  }
+
+  setCamera(cameraPosition: BarkoderConstants.BarkoderCameraPosition) : void {
+    if(cameraPosition == BarkoderConstants.BarkoderCameraPosition.Front) {
+      this.bkdView.setCamera(com.barkoder.enums.BarkoderCameraPosition.FRONT);
+    } else if (cameraPosition == BarkoderConstants.BarkoderCameraPosition.Back) {
+      this.bkdView.setCamera(com.barkoder.enums.BarkoderCameraPosition.BACK);
+    }
+    
   }
 
 
