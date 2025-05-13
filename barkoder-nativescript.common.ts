@@ -109,6 +109,30 @@ export enum Code39ChecksumType {
     Front = 1
   }
 
+  export enum BarkoderARMode {
+    OFF = 0,
+    InteractiveDisabled = 1,
+    InteractiveEnabled = 2,
+    NonInteractive = 3
+  }
+
+  export enum BarkoderARHeaderShowMode {
+    NEVER = 0,
+    ALWAYS = 1,
+    ONSELECTED = 2
+  }
+
+  export enum BarkoderARLocationType {
+    NONE = 0,
+    TIGHT = 1,
+    BOUNDINGBOX = 2
+  }
+
+  export enum BarkoderAROverlayRefresh {
+    SMOOTH = 0,
+    NORMAL = 1
+  }
+
 export class Common extends Observable {
 
 }

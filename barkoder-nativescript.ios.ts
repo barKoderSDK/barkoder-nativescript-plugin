@@ -22,6 +22,14 @@ export class BarkoderViewIOS extends View {
     this.bkdView.startScanningError(resultDelegate);
   }
 
+  freezeScanning() {
+    this.bkdView.freezeScanning()
+  }
+
+  unfreezeScanning() {
+    this.bkdView.unfreezeScanning()
+  }
+
   scanImage(base64Image: string, callback: BarkoderConstants.BarkoderResultCallback): void {
 
     // Convert Base64 to UIImage
@@ -1302,6 +1310,186 @@ export class BarkoderViewIOS extends View {
        this.bkdView.setCamera(BarkoderCameraPosition.BACK);
         }
   }
+
+  setBarkoderARMode(arMode: BarkoderConstants.BarkoderARMode): void {
+     if (arMode == BarkoderConstants.BarkoderARMode.OFF) {
+       this.bkdView.config.arConfig.arMode = 0
+     } else if (arMode == BarkoderConstants.BarkoderARMode.InteractiveDisabled) {
+       this.bkdView.config.arConfig.arMode = 1
+     } else if (arMode == BarkoderConstants.BarkoderARMode.InteractiveEnabled) {
+       this.bkdView.config.arConfig.arMode = 2
+     } else if (arMode == BarkoderConstants.BarkoderARMode.NonInteractive) {
+       this.bkdView.config.arConfig.arMode = 3
+     }
+   }
+ 
+   getBarkoderARMode(): any {
+     return this.bkdView.config.arConfig.arMode
+   }
+ 
+   setBarkoderARLocationType(locationType: BarkoderConstants.BarkoderARLocationType): void {
+     if (locationType == BarkoderConstants.BarkoderARLocationType.NONE) {
+       this.bkdView.config.arConfig.locationType = 0
+     } else if (locationType == BarkoderConstants.BarkoderARLocationType.TIGHT) {
+       this.bkdView.config.arConfig.locationType = 1
+     } else if (locationType == BarkoderConstants.BarkoderARLocationType.BOUNDINGBOX) {
+       this.bkdView.config.arConfig.locationType = 2
+     }
+   }
+ 
+   getBarkoderARLocationType() : any {
+     return this.bkdView.config.arConfig.locationType
+   }
+ 
+   setBarkoderARHeaderShowMode(headerShowMode: BarkoderConstants.BarkoderARHeaderShowMode): void {
+     if (headerShowMode == BarkoderConstants.BarkoderARHeaderShowMode.NEVER) {
+       this.bkdView.config.arConfig.headerShowMode = 0
+     } else if (headerShowMode == BarkoderConstants.BarkoderARHeaderShowMode.ALWAYS) {
+       this.bkdView.config.arConfig.headerShowMode = 1
+     } else if (headerShowMode == BarkoderConstants.BarkoderARHeaderShowMode.ONSELECTED) {
+       this.bkdView.config.arConfig.headerShowMode = 2
+     }
+   }
+ 
+   getBarkoderARHeaderShowMode() : any {
+     return this.bkdView.config.arConfig.headerShowMode
+   }
+ 
+   setBarkoderARoverlayRefresh(overlayRefresh: BarkoderConstants.BarkoderAROverlayRefresh): void {
+     if (overlayRefresh == BarkoderConstants.BarkoderAROverlayRefresh.SMOOTH) {
+       this.bkdView.config.arConfig.overlayRefresh = 1;
+     } else if (overlayRefresh == BarkoderConstants.BarkoderAROverlayRefresh.NORMAL) {
+       this.bkdView.config.arConfig.overlayRefresh = 2;
+     }
+   }
+ 
+   getBarkoderARoverlayRefresh() : any {
+     return this.bkdView.config.arConfig.overlayRefresh
+   }
+ 
+   setARNonSelectedLocationLineColor(locationLineColor: string): void {
+     const locationColor = this.hexToUIColor(locationLineColor);
+     this.bkdView.config.arConfig.nonSelectedLocationColor = locationColor;
+   }
+ 
+   getARNonSelectedLocationLineColor() : any {
+     return this.bkdView.config.arConfig.nonSelectedLocationColor;
+   }
+ 
+   setARSelectedLocationLineColor(locationLineColor: string): void {
+     const locationColor = this.hexToUIColor(locationLineColor);
+     this.bkdView.config.arConfig.selectedLocationColor = locationColor;
+   }
+ 
+   getARSelectedLocationLineColor(): any {
+     return this.bkdView.config.arConfig.selectedLocationColor;
+   }
+ 
+   setARHeaderMaxTextHeight(maxText : number) : void {
+     this.bkdView.config.arConfig.headerMaxTextHeight = maxText;
+   }
+ 
+   getARHeaderMaxTextHeight() : any {
+     return this.bkdView.config.arConfig.headerMaxTextHeight
+   }
+ 
+   setARHeaderMinTextHeight(minText: number): void {
+     this.bkdView.config.arConfig.headerMinTextHeight = minText;
+   }
+ 
+   getARHeaderMinTextHeight(): any {
+     return this.bkdView.config.arConfig.headerMinTextHeight
+   }
+ 
+   setARHeaderHeight(height: number) : void {
+     this.bkdView.config.arConfig.headerHeight = height
+   }
+ 
+   getARHeaderHeight(): any {
+     return this.bkdView.config.arConfig.headerHeight
+   }
+ 
+   setARHeaderVerticalTextMargin(margin : number) : void {
+     this.bkdView.config.arConfig.headerVerticalTextMargin = margin
+   }
+ 
+   getARHeaderVerticalTextMargin(): void {
+     return this.bkdView.config.arConfig.headerVerticalTextMargin
+   }
+ 
+   setARHeaderHorizontalTextMargin(margin: number): void {
+     this.bkdView.config.arConfig.headerHorizontalTextMargin = margin
+   }
+ 
+   getARHeaderHorizontalTextMargin(): void {
+     return this.bkdView.config.arConfig.headerHorizontalTextMargin
+   }
+ 
+   setARNonSelectedHeaderTextColor(locationLineColor: string): void {
+     const locationColor = this.hexToUIColor(locationLineColor);
+     this.bkdView.config.arConfig.headerTextColorNonSelected = locationColor;
+   }
+ 
+   getARNonSelectedHeaderTextColor() : any {
+     return this.bkdView.config.arConfig.headerTextColorNonSelected
+   }
+ 
+   setARSelectedHeaderTextColor(locationLineColor: string): void {
+     const locationColor = this.hexToUIColor(locationLineColor);
+     this.bkdView.config.arConfig.headerTextColorSelected = locationColor
+   }
+ 
+   getARSelectedHeaderTextColor(): any {
+     return this.bkdView.config.arConfig.headerTextColorSelected
+   }
+ 
+   setARDoubleTapToFreezeEnabled(enabled : boolean) : void {
+     this.bkdView.config.arConfig.doubleTapToFreezeEnabled = enabled
+   }
+ 
+   getARDoubleTapToFreezeEnabled(): any {
+     return this.bkdView.config.arConfig.doubleTapToFreezeEnabled
+   }
+ 
+   setResultDisappearanceDelayMs(ms : number) : void {
+     this.bkdView.config.arConfig.resultDisappearanceDelayMs = ms
+   }
+ 
+   getResultDisappearanceDelayMs(): any {
+     return this.bkdView.config.arConfig.resultDisappearanceDelayMs
+   }
+ 
+   setARLocationTransitionSpeed(speed : number) : void {
+     this.bkdView.config.arConfig.locationTransitionSpeed = speed
+   }
+ 
+   getARLocationTransitionSpeed(): any {
+     return this.bkdView.config.arConfig.locationTransitionSpeed
+   }
+ 
+   setARSelectedLocationLineWidth(width : number) : void {
+     this.bkdView.config.arConfig.selectedLocationLineWidth = width
+   }
+ 
+   getARSelectedLocationLineWidth(): any {
+     return this.bkdView.config.arConfig.selectedLocationLineWidth
+   }
+ 
+   setARNonSelectedLocationLineWidth(width: number): void {
+     this.bkdView.config.arConfig.nonSelectedLocationLineWidth = width
+   }
+ 
+   getARNonSelectedLocationLineWidth(): any {
+     return this.bkdView.config.arConfig.nonSelectedLocationLineWidth
+   }
+ 
+   setARHeaderTextFormat(format : string) : void {
+     this.bkdView.config.arConfig.headerTextFormat = format
+   }
+ 
+   getARHeaderTextFormat(format: string): void {
+     return this.bkdView.config.arConfig.headerTextFormat
+   }
 
 
   /**

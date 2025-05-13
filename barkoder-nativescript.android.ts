@@ -57,6 +57,14 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.startScanning(resultCallback);
   }
 
+  freezeScanning() {
+    this.bkdView.freezeScanning()
+  }
+
+  unfreezeScanning(){
+    this.bkdView.unfreezeScanning()
+  }
+
 
   scanImage(
     base64Image: string,
@@ -1291,9 +1299,185 @@ export class BarkoderViewAndroid extends View {
     
   }
 
+  setBarkoderARMode(arMode: BarkoderConstants.BarkoderARMode): void {
+    if (arMode == BarkoderConstants.BarkoderARMode.OFF) {
+      this.bkdView.config.arConfig.arMode = com.barkoder.enums.BarkoderARMode.OFF;
+    } else if (arMode == BarkoderConstants.BarkoderARMode.InteractiveDisabled) {
+      this.bkdView.config.arConfig.arMode = com.barkoder.enums.BarkoderARMode.InteractiveDisabled;
+    } else if (arMode == BarkoderConstants.BarkoderARMode.InteractiveEnabled) {
+      this.bkdView.config.arConfig.arMode = com.barkoder.enums.BarkoderARMode.InteractiveEnabled;
+    } else if (arMode == BarkoderConstants.BarkoderARMode.NonInteractive) {
+      this.bkdView.config.arConfig.arMode = com.barkoder.enums.BarkoderARMode.NonInteractive;
+    }
+  }
 
+  getBarkoderARMode(): any {
+    return this.bkdView.config.arConfig.arMode
+  }
 
+  setBarkoderARLocationType(locationType: BarkoderConstants.BarkoderARLocationType): void {
+    if (locationType == BarkoderConstants.BarkoderARLocationType.NONE) {
+      this.bkdView.config.arConfig.locationType = com.barkoder.enums.BarkoderARLocationType.NONE;
+    } else if (locationType == BarkoderConstants.BarkoderARLocationType.TIGHT) {
+      this.bkdView.config.arConfig.locationType = com.barkoder.enums.BarkoderARLocationType.TIGHT;
+    } else if (locationType == BarkoderConstants.BarkoderARLocationType.BOUNDINGBOX) {
+      this.bkdView.config.arConfig.locationType = com.barkoder.enums.BarkoderARLocationType.BOUNDINGBOX;
+    }
+  }
 
+  getBarkoderARLocationType() : any {
+    return this.bkdView.config.arConfig.locationType
+  }
+
+  setBarkoderARHeaderShowMode(headerShowMode: BarkoderConstants.BarkoderARHeaderShowMode): void {
+    if (headerShowMode == BarkoderConstants.BarkoderARHeaderShowMode.NEVER) {
+      this.bkdView.config.arConfig.headerShowMode = com.barkoder.enums.BarkoderARHeaderShowMode.NEVER;
+    } else if (headerShowMode == BarkoderConstants.BarkoderARHeaderShowMode.ONSELECTED) {
+      this.bkdView.config.arConfig.headerShowMode = com.barkoder.enums.BarkoderARHeaderShowMode.ONSELECTED;
+    } else if (headerShowMode == BarkoderConstants.BarkoderARHeaderShowMode.ALWAYS) {
+      this.bkdView.config.arConfig.headerShowMode = com.barkoder.enums.BarkoderARHeaderShowMode.ALWAYS;
+    }
+  }
+
+  getBarkoderARHeaderShowMode() : any {
+    return this.bkdView.config.arConfig.headerShowMode
+  }
+
+  setBarkoderARoverlayRefresh(overlayRefresh: BarkoderConstants.BarkoderAROverlayRefresh): void {
+    if (overlayRefresh == BarkoderConstants.BarkoderAROverlayRefresh.SMOOTH) {
+      this.bkdView.config.arConfig.overlayRefresh = com.barkoder.enums.BarkoderAROverlayRefresh.SMOOTH;
+    } else if (overlayRefresh == BarkoderConstants.BarkoderAROverlayRefresh.NORMAL) {
+      this.bkdView.config.arConfig.overlayRefresh = com.barkoder.enums.BarkoderAROverlayRefresh.NORMAL;
+    }
+  }
+
+  getBarkoderARoverlayRefresh() : any {
+    return this.bkdView.config.arConfig.overlayRefresh
+  }
+
+  setARNonSelectedLocationLineColor(locationLineColor: string): void {
+    const locationColor = this.hexToAndroidColor(locationLineColor);
+    this.bkdView.config.arConfig.setNonSelectedLocationColor(locationColor);
+  }
+
+  getARNonSelectedLocationLineColor() : any {
+    return this.bkdView.config.arConfig.getNonSelectedLocationColor();
+  }
+
+  setARSelectedLocationLineColor(locationLineColor: string): void {
+    const locationColor = this.hexToAndroidColor(locationLineColor);
+    this.bkdView.config.arConfig.setSelectedLocationColor(locationColor);
+  }
+
+  getARSelectedLocationLineColor(): any {
+    return this.bkdView.config.arConfig.getSelectedLocationColor();
+  }
+
+  setARHeaderMaxTextHeight(maxText : number) : void {
+    this.bkdView.config.arConfig.setHeaderMaxTextHeight(maxText)
+  }
+
+  getARHeaderMaxTextHeight() : any {
+   return this.bkdView.config.arConfig.getHeaderMaxTextHeight()
+  }
+
+  setARHeaderMinTextHeight(maxText: number): void {
+    this.bkdView.config.arConfig.setHeaderMinTextHeight(maxText)
+  }
+
+  getARHeaderMinTextHeight(): any {
+   return this.bkdView.config.arConfig.getHeaderMinTextHeight()
+  }
+
+  setARHeaderHeight(height: number) : void {
+    this.bkdView.config.arConfig.setHeaderHeight(height)
+  }
+
+  getARHeaderHeight(): any {
+   return this.bkdView.config.arConfig.getHeaderHeight()
+  }
+
+  setARHeaderVerticalTextMargin(margin : number) : void {
+    this.bkdView.config.arConfig.setHeaderVerticalTextMargin(margin)
+  }
+
+  getARHeaderVerticalTextMargin(): void {
+    return this.bkdView.config.arConfig.getHeaderVerticalTextMargin()
+  }
+
+  setARHeaderHorizontalTextMargin(margin: number): void {
+    this.bkdView.config.arConfig.setHeaderHorizontalTextMargin(margin)
+  }
+
+  getARHeaderHorizontalTextMargin(): void {
+    return this.bkdView.config.arConfig.getHeaderHorizontalTextMargin()
+  }
+
+  setARNonSelectedHeaderTextColor(locationLineColor: string): void {
+    const locationColor = this.hexToAndroidColor(locationLineColor);
+    this.bkdView.config.arConfig.setHeaderTextColorNonSelected(locationColor);
+  }
+
+  getARNonSelectedHeaderTextColor() : any {
+    return this.bkdView.config.arConfig.getHeaderTextColorNonSelected()
+  }
+
+  setARSelectedHeaderTextColor(locationLineColor: string): void {
+    const locationColor = this.hexToAndroidColor(locationLineColor);
+    this.bkdView.config.arConfig.setHeaderTextColorSelected(locationColor);
+  }
+
+  getARSelectedHeaderTextColor(): any {
+    return this.bkdView.config.arConfig.getHeaderTextColorSelected()
+  }
+
+  setARDoubleTapToFreezeEnabled(enabled : boolean) : void {
+    this.bkdView.config.arConfig.setDoubleTapToFreezeEnabled(enabled);
+  }
+
+  getARDoubleTapToFreezeEnabled(): any {
+    return this.bkdView.config.arConfig.isDoubleTapToFreezeEnabled();
+  }
+
+  setResultDisappearanceDelayMs(ms : number) : void {
+    this.bkdView.config.arConfig.setResultDisappearanceDelayMs(ms);
+  }
+
+  getResultDisappearanceDelayMs(): any {
+    return this.bkdView.config.arConfig.getResultDisappearanceDelayMs();
+  }
+
+  setARLocationTransitionSpeed(speed : number) : void {
+    this.bkdView.config.arConfig.setLocationTransitionSpeed(speed);
+  }
+
+  getARLocationTransitionSpeed(): any {
+    return this.bkdView.config.arConfig.getLocationTransitionSpeed();
+  }
+
+  setARSelectedLocationLineWidth(width : number) : void {
+    this.bkdView.config.arConfig.setSelectedLocationLineWidth(width);
+  }
+
+  getARSelectedLocationLineWidth(): any {
+    return this.bkdView.config.arConfig.getSelectedLocationLineWidth();
+  }
+
+  setARNonSelectedLocationLineWidth(width: number): void {
+    this.bkdView.config.arConfig.setNonSelectedLocationLineWidth(width);
+  }
+
+  getARNonSelectedLocationLineWidth(): any {
+    return this.bkdView.config.arConfig.getNonSelectedLocationLineWidth();
+  }
+
+  setARHeaderTextFormat(format : string) : void {
+    this.bkdView.config.arConfig.setHeaderTextFormat(format);
+  }
+
+  getARHeaderTextFormat(format: string): void {
+    return this.bkdView.config.arConfig.getHeaderTextFormat(format);
+  }
   setLicenseKey(licenseKey: string): void {
     this.bkdView.config = new com.barkoder.BarkoderConfig(
       context,
