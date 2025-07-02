@@ -1,6 +1,7 @@
 import { BarkoderConstants } from "./barkoder-nativescript.common";
 import { View } from "@nativescript/core";
 import { ios } from "@nativescript/core/application";
+import { ImageSource } from '@nativescript/core';
 
 export class BarkoderViewIOS extends View {
   public bkdView: any;
@@ -442,6 +443,8 @@ export class BarkoderViewIOS extends View {
       this.bkdView.config.decoderConfig.decodingSpeed = 1;
     } else if (decodingSpeed == BarkoderConstants.DecodingSpeed.Slow) {
       this.bkdView.config.decoderConfig.decodingSpeed = 2;
+    } else if (decodingSpeed == BarkoderConstants.DecodingSpeed.Rigorous) {
+      this.bkdView.config.decoderConfig.decodingSpeed = 3;
     }
   }
 
@@ -608,6 +611,8 @@ export class BarkoderViewIOS extends View {
         return this.bkdView.config.decoderConfig.kix.enabled;
       case BarkoderConstants.DecoderType.JapanesePost:
         return this.bkdView.config.decoderConfig.japanasePost.enabled;
+      case BarkoderConstants.DecoderType.MaxiCode:
+        return this.bkdView.config.decoderConfig.maxiCode.enabled;
     }
   }
 
@@ -654,6 +659,7 @@ export class BarkoderViewIOS extends View {
     this.bkdView.config.decoderConfig.royalMail.enabled = false;
     this.bkdView.config.decoderConfig.kix.enabled = false;
     this.bkdView.config.decoderConfig.japanesePost.enabled = false;
+    this.bkdView.config.decoderConfig.maxiCode.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -770,6 +776,9 @@ export class BarkoderViewIOS extends View {
         case BarkoderConstants.DecoderType.JapanesePost:
           this.bkdView.config.decoderConfig.japanesePost.enabled = true;
           break;
+        case BarkoderConstants.DecoderType.MaxiCode:
+          this.bkdView.config.decoderConfig.maxiCode.enabled = true;
+            break;
         default:
           break;
       }
@@ -1139,6 +1148,26 @@ export class BarkoderViewIOS extends View {
    */
   getMaximumResultsCount(): any {
     return this.bkdView.config.decoderConfig.maximumResultsCount;
+  }
+
+  setARImageResultEnabled(enabled: boolean): void {
+    this.bkdView.config.arConfig.imageResultEnabled = enabled
+  }
+
+  setARBarcodeThumbnailOnResultEnabled(enabled: boolean): void {
+    this.bkdView.config.arConfig.barcodeThumbnailOnResult = enabled
+  }
+
+  isARImageResultEnabled(): any {
+    return this.bkdView.config.arConfig.imageResultEnabled
+  }
+
+  isARBarcodeThumbnailOnResultEnabled(): any {
+    return this.bkdView.config.arConfig.barcodeThumbnailOnResult
+  }
+
+  getCurrentZoomFactor(): any {
+    return this.bkdView.getCurrentZoomFactor()
   }
 
   /**
@@ -1544,10 +1573,42 @@ export class BarkoderViewWraper extends UIResponder
 
   scanningFinishedThumbnailsImage(
     decoderResults: NSArray<DecoderResult> | DecoderResult[],
-    thumbnails: NSArray<UIImage> | UIImage[],
-    image: UIImage
+    thumbnails: NSArray<UIImage> | UIImage[] | null,
+    image: UIImage | null
   ): void {
-    this.callback.scanningFinished(decoderResults, thumbnails, image);
+    const jsThumbnails: ImageSource[] = [];
+
+    // Convert thumbnails
+    if (thumbnails instanceof NSArray) {
+      for (let i = 0; i < thumbnails.count; i++) {
+        const uiImage = thumbnails.objectAtIndex(i);
+        const imgSrc = new ImageSource();
+        imgSrc.setNativeSource(uiImage);
+        jsThumbnails.push(imgSrc);
+      }
+    } else if (Array.isArray(thumbnails)) {
+      for (const uiImage of thumbnails) {
+        const imgSrc = new ImageSource();
+        imgSrc.setNativeSource(uiImage);
+        jsThumbnails.push(imgSrc);
+      }
+    }
+
+    // Convert result image to ImageSource if not null
+    let convertedImage: ImageSource | null = null;
+
+    if (image) {
+      convertedImage = new ImageSource();
+      convertedImage.setNativeSource(image);
+    } else if (jsThumbnails.length > 0) {
+      console.warn('⚠️ resultImage is null, using first thumbnail as fallback.');
+      convertedImage = jsThumbnails[0];
+    } else {
+      console.warn('⚠️ resultImage and thumbnails are both missing.');
+    }
+
+    // Call JS callback with safe image fallback
+    this.callback.scanningFinished(decoderResults, jsThumbnails, convertedImage);
   }
 
   static new(): BarkoderViewWraper {

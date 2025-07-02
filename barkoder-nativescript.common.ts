@@ -59,7 +59,8 @@ export enum DecoderType {
   AustralianPost = 35,
   RoyalMail = 36,
   KIX = 37,
-  JapanesePost = 38
+  JapanesePost = 38,
+  MaxiCode = 39
 
 }
 
@@ -73,7 +74,8 @@ export enum FormattingType {
 export enum DecodingSpeed {
   Fast = 0,
   Normal = 1,
-  Slow = 2
+  Slow = 2,
+  Rigorous = 3
 }
 
 export enum BarkoderResolution {
@@ -235,6 +237,7 @@ export class DekoderConfig {
   royalMail?: BarcodeConfig;
   kix?: BarcodeConfig;
   japanasePost?: BarcodeConfig;
+  maxicode?: BarcodeConfig;
   general?: GeneralSettings;
 
   constructor(config: Partial<DekoderConfig>) {
@@ -282,6 +285,7 @@ export class DekoderConfig {
       'Royal Mail': this.royalMail?.toMap(),
       'KIX': this.kix?.toMap(),
       'Japanase Post': this.japanasePost?.toMap(),
+      'MaxiCode': this.maxicode?.toMap(),
       'general': this.general?.toMap()
     }
 

@@ -35,6 +35,9 @@ export class BarkoderViewAndroid extends View {
     this.nativeView = this.bkdView;
   }
 
+
+  
+
   /**
    * Initiates the barcode scanning process, allowing the application to detect and decode barcodes from the device's camera feed
    */
@@ -44,16 +47,32 @@ export class BarkoderViewAndroid extends View {
     const resultCallback = new com.barkoder.interfaces.BarkoderResultCallback({
       scanningFinished: (
         results: any[],
-        thumbnails: any[],
+        thumbnails: any, // not a true JS array!
         resultImage: any
       ) => {
+        // Convert native array to JS array first
+        const jsThumbnails = [];
+        for (let i = 0; i < thumbnails.length; i++) {
+          jsThumbnails.push(thumbnails[i]);
+        }
+
+        const convertedThumbnails = jsThumbnails.map((bitmap) => {
+          const imgSrc = new ImageSource();
+          imgSrc.setNativeSource(bitmap);
+          return imgSrc;
+        });
+
+        const convertedResultImage = new ImageSource();
+        convertedResultImage.setNativeSource(resultImage);
+
         BarkoderResultCallback.scanningFinished(
           results,
-          thumbnails,
-          resultImage
+          convertedThumbnails,
+          convertedResultImage
         );
       },
     });
+
     this.bkdView.startScanning(resultCallback);
   }
 
@@ -478,7 +497,11 @@ export class BarkoderViewAndroid extends View {
     } else if (decodingSpeed == BarkoderConstants.DecodingSpeed.Normal) {
       this.bkdView.config.getDecoderConfig().decodingSpeed =
         com.barkoder.Barkoder.DecodingSpeed.Normal;
-    } else {
+    } else if (decodingSpeed == BarkoderConstants.DecodingSpeed.Rigorous) {
+      this.bkdView.config.getDecoderConfig().decodingSpeed =
+        com.barkoder.Barkoder.DecodingSpeed.Rigorous;
+    } 
+    else {
       console.log("Not avilbilable Decoding Speed");
     }
   }
@@ -662,6 +685,8 @@ export class BarkoderViewAndroid extends View {
         return this.bkdView.config.getDecoderConfig().KIX.enabled;
       case BarkoderConstants.DecoderType.JapanesePost:
         return this.bkdView.config.getDecoderConfig().JapanesePost.enabled;
+      case BarkoderConstants.DecoderType.MaxiCode:
+        return this.bkdView.config.getDecoderConfig().MaxiCode.enabled;
     }
   }
 
@@ -707,6 +732,7 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.config.getDecoderConfig().RoyalMail.enabled = false;
     this.bkdView.config.getDecoderConfig().KIX.enabled = false;
     this.bkdView.config.getDecoderConfig().JapanesePost.enabled = false;
+    this.bkdView.config.getDecoderConfig().MaxiCode.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -823,6 +849,9 @@ export class BarkoderViewAndroid extends View {
         case BarkoderConstants.DecoderType.JapanesePost:
           this.bkdView.config.getDecoderConfig().JapanesePost.enabled = true;
           break;
+        case BarkoderConstants.DecoderType.MaxiCode:
+          this.bkdView.config.getDecoderConfig().MaxiCode.enabled = true;
+            break;
         default:
           break;
       }
@@ -1105,6 +1134,26 @@ export class BarkoderViewAndroid extends View {
    */
   getDuplicatesDelayMs(): any {
     return this.bkdView.config.getDecoderConfig().duplicatesDelayMs;
+  }
+
+  setARImageResultEnabled(enabled: boolean): void {
+    this.bkdView.config.arConfig.imageResultEnabled = enabled
+  }
+
+  setARBarcodeThumbnailOnResultEnabled(enabled: boolean): void {
+    this.bkdView.config.arConfig.barcodeThumbnailOnResult = enabled
+  }
+
+  isARImageResultEnabled(): any {
+    return this.bkdView.config.arConfig.imageResultEnabled
+  }
+
+  isARBarcodeThumbnailOnResultEnabled(): any {
+    return this.bkdView.config.arConfig.barcodeThumbnailOnResult
+  }
+
+  getCurrentZoomFactor(): any {
+    return this.bkdView.getCurrentZoomFactor()
   }
 
   /**
@@ -1521,4 +1570,9 @@ export class BarkoderViewAndroid extends View {
       console.log(`Key: ${key}, Value: ${obj[key]}`);
     }
   }
+}
+function bitmapToImageSource(bitmap: android.graphics.Bitmap): ImageSource {
+  const imageSource = new ImageSource();
+  imageSource.setNativeSource(bitmap); // This is the key method
+  return imageSource;
 }
