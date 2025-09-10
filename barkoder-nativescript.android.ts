@@ -52,9 +52,13 @@ export class BarkoderViewAndroid extends View {
       ) => {
         // Convert native array to JS array first
         const jsThumbnails = [];
-        for (let i = 0; i < thumbnails.length; i++) {
-          jsThumbnails.push(thumbnails[i]);
+        
+        if(thumbnails != null) {
+          for (let i = 0; i < thumbnails.length; i++) {
+            jsThumbnails.push(thumbnails[i]);
+          }
         }
+      
 
         const convertedThumbnails = jsThumbnails.map((bitmap) => {
           const imgSrc = new ImageSource();
@@ -120,6 +124,10 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.stopScanning();
   }
 
+  captureImage(): void {
+    this.bkdView.captureImage();
+  }
+
   pauseScanning(): void {
     this.bkdView.pauseScanning();
   }
@@ -145,6 +153,15 @@ export class BarkoderViewAndroid extends View {
   setFlashEnabled(enabled: boolean): void {
     this.bkdView.setFlashEnabled(enabled);
   }
+
+  setARContinueScanningOnLimit(enabled: boolean): void {
+    this.bkdView.config.arConfig.setContinueScanningOnLimit(enabled);
+  }
+
+  setAREmitResultsAtSessionEndOnly(enabled: boolean): void {
+    this.bkdView.config.arConfig.emitResultsAtSessionEndOnly = enabled;
+  }
+
 
   /**
    * Retrieves the maximum available zoom factor for the device's camera
@@ -527,6 +544,10 @@ export class BarkoderViewAndroid extends View {
         this.bkdView.config.getDecoderConfig().formattingType =
           com.barkoder.Barkoder.FormattingType.AAMVA;
         break;
+      case BarkoderConstants.FormattingType.SADL:
+        this.bkdView.config.getDecoderConfig().formattingType =
+          com.barkoder.Barkoder.FormattingType.SADL;
+            break;
     }
   }
 
@@ -1099,6 +1120,10 @@ export class BarkoderViewAndroid extends View {
    */
   setMaximumResultsCount(maximumResultsCount: number): void {
     this.bkdView.config.getDecoderConfig().maximumResultsCount = maximumResultsCount;
+  }
+
+  setARResultLimit(resultLimit: number): void {
+    this.bkdView.config.arConfig.resultLimit = resultLimit;
   }
 
   /**

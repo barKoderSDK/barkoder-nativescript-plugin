@@ -68,7 +68,8 @@ export enum FormattingType {
   Disabled = 0,
   Automatic = 1,
   GS1 = 2,
-  AAMVA = 3
+  AAMVA = 3,
+  SADL = 4
 }
 
 export enum DecodingSpeed {

@@ -94,6 +94,10 @@ export class BarkoderViewIOS extends View {
     this.bkdView.setFlash(enabled);
   }
 
+  captureImage(): void {
+    this.bkdView.captureImage();
+  }
+
   /**
    * Retrieves the maximum available zoom factor for the device's camera
    */
@@ -465,6 +469,9 @@ export class BarkoderViewIOS extends View {
       case BarkoderConstants.FormattingType.AAMVA:
         this.bkdView.config.decoderConfig.formatting = 3;
         break;
+      case BarkoderConstants.FormattingType.SADL:
+        this.bkdView.config.decoderConfig.formatting = 4;
+          break;
     }
   }
 
@@ -1483,6 +1490,18 @@ export class BarkoderViewIOS extends View {
    setResultDisappearanceDelayMs(ms : number) : void {
      this.bkdView.config.arConfig.resultDisappearanceDelayMs = ms
    }
+
+  setARResultLimit(resultLimit: number): void {
+    this.bkdView.config.arConfig.resultLimit = resultLimit
+  }
+
+  setARContinueScanningOnLimit(enabled: boolean): void {
+    this.bkdView.config.arConfig.continueScanningOnLimit = enabled
+  }
+
+  setAREmitResultsAtSessionEndOnly(enabled: boolean): void {
+    this.bkdView.config.arConfig.emitResultsAtSessionEndOnly = enabled
+  }
  
    getResultDisappearanceDelayMs(): any {
      return this.bkdView.config.arConfig.resultDisappearanceDelayMs
@@ -1586,32 +1605,51 @@ export class BarkoderViewWraper extends UIResponder
         imgSrc.setNativeSource(uiImage);
         jsThumbnails.push(imgSrc);
       }
-    } else if (Array.isArray(thumbnails)) {
-      for (const uiImage of thumbnails) {
-        const imgSrc = new ImageSource();
-        imgSrc.setNativeSource(uiImage);
-        jsThumbnails.push(imgSrc);
+    }
+
+    const jsResults: any[] = [];
+
+    if (decoderResults instanceof NSArray) {
+      for (let i = 0; i < decoderResults.count; i++) {
+        const result = decoderResults.objectAtIndex(i);
+        jsResults.push(this._convertResult(result));
       }
     }
 
-    // Convert result image to ImageSource if not null
+    // Convert image
     let convertedImage: ImageSource | null = null;
-
     if (image) {
       convertedImage = new ImageSource();
       convertedImage.setNativeSource(image);
-    } else if (jsThumbnails.length > 0) {
-      console.warn('⚠️ resultImage is null, using first thumbnail as fallback.');
-      convertedImage = jsThumbnails[0];
-    } else {
-      console.warn('⚠️ resultImage and thumbnails are both missing.');
     }
 
-    // Call JS callback with safe image fallback
-    this.callback.scanningFinished(decoderResults, jsThumbnails, convertedImage);
+    // Fire JS callback
+    this.callback.scanningFinished(jsResults, jsThumbnails, convertedImage);
   }
 
   static new(): BarkoderViewWraper {
     return super.new.call(this);
+  }
+
+  private _convertResult(result: any): any {
+    const extras: { key: string; value: string }[] = [];
+
+    if (result.extra && result.extra.allKeys) {
+      const keys = result.extra.allKeys;
+      for (let i = 0; i < keys.count; i++) {
+        const key = keys.objectAtIndex(i);
+        const value = result.extra.objectForKey(key);
+        extras.push({
+          key: key.toString(),
+          value: value?.toString?.() ?? '',
+        });
+      }
+    }
+
+    return {
+      textualData: result.textualData,
+      extra: extras,
+      // add other fields if needed (e.g., barcodeType, location, etc.)
+    };
   }
 }
