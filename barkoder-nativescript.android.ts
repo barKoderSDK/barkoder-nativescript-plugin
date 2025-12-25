@@ -1,6 +1,6 @@
 import { BarkoderConstants } from "./barkoder-nativescript.common";
 import * as application from "@nativescript/core/application";
-import { View } from "@nativescript/core";
+import { Color, View } from "@nativescript/core";
 import { BarkoderView } from "./barkoder-nativescript.common";
 import { ImageSource } from '@nativescript/core';
 
@@ -278,6 +278,252 @@ export class BarkoderViewAndroid extends View {
    */
   setRegionOfInterestVisible(enabled: boolean): void {
     this.bkdView.config.setRegionOfInterestVisible(enabled);
+  }
+
+
+
+
+
+/**
+ * Configures the flash button with custom settings, supporting NativeScript types.
+ */
+  configureFlashButton(
+    visible: boolean,
+    position: number[],
+    iconSize: number,
+    tintColor: string | Color | null,
+    backgroundColor: string | Color | null,
+    cornerRadius: number,
+    padding: number,
+    useCustomIcon: boolean,
+    flashOnIconBase64: string,
+    flashOffIconBase64: string
+  ): void {
+
+    let nativeTintColor: java.lang.Integer = null;
+    if (tintColor != null) {
+      const color = (tintColor instanceof Color)
+        ? tintColor
+        : new Color(tintColor as string);
+      nativeTintColor = java.lang.Integer.valueOf(color.android);
+    }
+
+    let nativeBackgroundColor: java.lang.Integer = null;
+    if (backgroundColor != null) {
+      const color = (backgroundColor instanceof Color)
+        ? backgroundColor
+        : new Color(backgroundColor as string);
+      nativeBackgroundColor = java.lang.Integer.valueOf(color.android);
+    }
+
+    const nativePosition = java.lang.reflect.Array.newInstance(java.lang.Float.TYPE, 2);
+    nativePosition[0] = position[0];
+    nativePosition[1] = position[1];
+
+    let nativeFlashOnBitmap = null;
+    let nativeFlashOffBitmap = null;
+
+    if (useCustomIcon) {
+      nativeFlashOnBitmap = this.decodeBase64ToBitmap(flashOnIconBase64);
+      nativeFlashOffBitmap = this.decodeBase64ToBitmap(flashOffIconBase64);
+    }
+
+    this.bkdView.configureFlashButton(
+      visible,
+      nativePosition,
+      iconSize,
+      nativeTintColor,
+      nativeBackgroundColor,
+      cornerRadius,
+      padding,
+      useCustomIcon,
+      nativeFlashOnBitmap,
+      nativeFlashOffBitmap
+    );
+  }
+
+
+private decodeBase64ToBitmap(base64String: string): android.graphics.Bitmap | null {
+  if (!base64String) {
+    return null;
+  }
+  try {
+    // 1. Decode the Base64 string into a byte array
+    const decodedBytes = android.util.Base64.decode(base64String, android.util.Base64.DEFAULT);
+
+    // 2. Use BitmapFactory to create a Bitmap from the byte array
+    const bitmap = android.graphics.BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+    return bitmap;
+  } catch (e) {
+    console.error("Error decoding Base64 string to Bitmap:", e);
+    return null;
+  }
+}
+
+  configureCloseButton(
+    visible: boolean,
+    position: number[],
+    iconSize: number,
+    tintColor: string | Color | null,
+    backgroundColor: string | Color | null,
+    cornerRadius: number,
+    padding: number,
+    useCustomIcon: boolean,
+    customIcon: string,
+    onCloseCallback?: () => void
+  ): void {
+    if (!this.bkdView) {
+      return;
+    }
+
+    // ✅ 1. Safely convert tintColor
+    let nativeTintColor: java.lang.Integer = null;
+    if (tintColor != null) {
+      const color = tintColor instanceof Color
+        ? tintColor
+        : new Color(tintColor as string);
+      nativeTintColor = java.lang.Integer.valueOf(color.android);
+    }
+
+    // ✅ 2. Safely convert backgroundColor
+    let nativeBackgroundColor: java.lang.Integer = null;
+    if (backgroundColor != null) {
+      const color = backgroundColor instanceof Color
+        ? backgroundColor
+        : new Color(backgroundColor as string);
+      nativeBackgroundColor = java.lang.Integer.valueOf(color.android);
+    }
+
+    // ✅ 3. Convert position to float[]
+    const nativePosition = java.lang.reflect.Array.newInstance(java.lang.Float.TYPE, 2);
+    nativePosition[0] = position[0];
+    nativePosition[1] = position[1];
+
+    // ✅ 4. Decode base64 icon if needed
+    let customIconBitmap = null;
+    if (useCustomIcon && customIcon) {
+      customIconBitmap = this.decodeBase64ToBitmap(customIcon);
+    }
+
+    // ✅ 5. Wrap the JS callback into a native Runnable
+    const nativeCallback = onCloseCallback
+      ? new java.lang.Runnable({
+        run: () => {
+          onCloseCallback();
+        }
+      })
+      : null;
+
+    // ✅ 6. Call native Android method
+    this.bkdView.configureCloseButton(
+      visible,
+      nativePosition,
+      iconSize,
+      nativeTintColor,
+      nativeBackgroundColor,
+      cornerRadius,
+      padding,
+      useCustomIcon,
+      customIconBitmap,
+      nativeCallback
+    );
+  }
+
+
+  configureZoomButton(
+    visible: boolean,
+    position: number[], // [xDp, yDp]
+    iconSize: number,
+    tintColor: string | Color | null,
+    backgroundColor: string | Color | null,
+    cornerRadius: number,
+    padding: number,
+    useCustomIcon: boolean,
+    zoomInIconBase64: string,
+    zoomOutIconBase64: string,
+    zoomedInFactor: number,
+    zoomedOutFactor: number
+  ): void {
+    if (!this.bkdView || !global.isAndroid) {
+      return;
+    }
+
+    // ✅ 1. Safely convert tintColor
+    let nativeTintColor: java.lang.Integer = null;
+    if (tintColor != null) {
+      const color = tintColor instanceof Color
+        ? tintColor
+        : new Color(tintColor as string);
+      nativeTintColor = java.lang.Integer.valueOf(color.android);
+    }
+
+    // ✅ 2. Safely convert backgroundColor
+    let nativeBackgroundColor: java.lang.Integer = null;
+    if (backgroundColor != null) {
+      const color = backgroundColor instanceof Color
+        ? backgroundColor
+        : new Color(backgroundColor as string);
+      nativeBackgroundColor = java.lang.Integer.valueOf(color.android);
+    }
+
+    // ✅ 3. Convert Position (JS number[] -> Java float[])
+    const nativePosition = java.lang.reflect.Array.newInstance(java.lang.Float.TYPE, 2);
+    nativePosition[0] = position[0];
+    nativePosition[1] = position[1];
+
+    // ✅ 4. Decode base64 icons if using custom icons
+    let nativeZoomInBitmap = null;
+    let nativeZoomOutBitmap = null;
+
+    if (useCustomIcon && zoomInIconBase64 && zoomOutIconBase64) {
+      nativeZoomInBitmap = this.decodeBase64ToBitmap(zoomInIconBase64);
+      nativeZoomOutBitmap = this.decodeBase64ToBitmap(zoomOutIconBase64);
+    }
+
+    // ✅ 5. Call native method
+    this.bkdView.configureZoomButton(
+      visible,
+      nativePosition,
+      iconSize,
+      nativeTintColor,
+      nativeBackgroundColor,
+      cornerRadius,
+      padding,
+      useCustomIcon,
+      nativeZoomInBitmap,
+      nativeZoomOutBitmap,
+      zoomedInFactor,
+      zoomedOutFactor
+    );
+  }
+
+
+// --- Placeholder for a Conversion Utility (Not part of the core wrapper, but essential) ---
+private convertToNativeBitmap(imageSource: any): any /* android.graphics.Bitmap */ {
+  if (!imageSource) {
+    return null;
+  }
+
+  // If the imageSource is already a native Bitmap (from a previous conversion/cache)
+  if (imageSource.android instanceof com.google.zxing.qrcode.encoder.ByteMatrix) { // Incorrect type, placeholder
+    // return imageSource.android; 
+  }
+
+  // Example conversion (highly simplified - you'll need the correct NativeScript helpers)
+  /* if (imageSource instanceof ImageSource) {
+      const nativeBitmap = imageSource.android;
+      return nativeBitmap;
+  } 
+  */
+
+  // For a robust wrapper, you would need to:
+  // 1. Check if the input is a file path, Base64 string, or an ImageSource object.
+  // 2. Use NativeScript's image-loading utilities to load and convert it to an 
+  //    `android.graphics.Bitmap`.
+
+  console.warn("Image conversion placeholder called. Replace with actual logic.");
+  return null; // Return null if conversion fails
   }
 
   /**
@@ -708,6 +954,8 @@ export class BarkoderViewAndroid extends View {
         return this.bkdView.config.getDecoderConfig().JapanesePost.enabled;
       case BarkoderConstants.DecoderType.MaxiCode:
         return this.bkdView.config.getDecoderConfig().MaxiCode.enabled;
+      case BarkoderConstants.DecoderType.OCRText:
+        return this.bkdView.config.getDecoderConfig().OCRText.enabled;
     }
   }
 
@@ -754,6 +1002,7 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.config.getDecoderConfig().KIX.enabled = false;
     this.bkdView.config.getDecoderConfig().JapanesePost.enabled = false;
     this.bkdView.config.getDecoderConfig().MaxiCode.enabled = false;
+    this.bkdView.config.getDecoderConfig().OCRText.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -873,6 +1122,9 @@ export class BarkoderViewAndroid extends View {
         case BarkoderConstants.DecoderType.MaxiCode:
           this.bkdView.config.getDecoderConfig().MaxiCode.enabled = true;
             break;
+        case BarkoderConstants.DecoderType.OCRText:
+          this.bkdView.config.getDecoderConfig().OCRText.enabled = true;
+          break;
         default:
           break;
       }
@@ -1133,6 +1385,29 @@ export class BarkoderViewAndroid extends View {
     this.bkdView.config.getDecoderConfig().duplicatesDelayMs = duplicateDelayMs;
   }
 
+  getSadlImageFromExtra(extra: any): ImageSource | null {
+    if (!extra || !global.isAndroid) {
+      return null;
+    }
+
+    try {
+      const bitmap =
+        com.barkoder.BarkoderHelper.sadlImage(extra);
+
+      if (!bitmap) {
+        return null;
+      }
+
+      const imageSource = new ImageSource();
+      imageSource.setNativeSource(bitmap);
+      return imageSource;
+
+    } catch (e) {
+      console.error('Failed to extract SADL image:', e);
+      return null;
+    }
+  }
+
   /**
    * Sets the caching duration (in milliseconds) for multi-code results
    */
@@ -1350,6 +1625,10 @@ export class BarkoderViewAndroid extends View {
 
   setCustomOption(string : string, mode: number): void {
     com.barkoder.Barkoder.SetCustomOption(this.bkdView.config.getDecoderConfig(), string, mode);
+  }
+
+  setCustomOptionGlobal(string: string, mode: number): void {
+    com.barkoder.Barkoder.SetCustomOptionGlobal(string, mode);
   }
 
   setDynamicExposure(mode : number) : void {

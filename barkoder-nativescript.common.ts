@@ -60,7 +60,8 @@ export enum DecoderType {
   RoyalMail = 36,
   KIX = 37,
   JapanesePost = 38,
-  MaxiCode = 39
+  MaxiCode = 39,
+  OCRText = 40
 
 }
 
@@ -239,6 +240,7 @@ export class DekoderConfig {
   kix?: BarcodeConfig;
   japanasePost?: BarcodeConfig;
   maxicode?: BarcodeConfig;
+  ocrText?: BarcodeConfig;
   general?: GeneralSettings;
 
   constructor(config: Partial<DekoderConfig>) {
@@ -287,6 +289,7 @@ export class DekoderConfig {
       'KIX': this.kix?.toMap(),
       'Japanase Post': this.japanasePost?.toMap(),
       'MaxiCode': this.maxicode?.toMap(),
+      'OCR Text': this.maxicode?.toMap(),
       'general': this.general?.toMap()
     }
 

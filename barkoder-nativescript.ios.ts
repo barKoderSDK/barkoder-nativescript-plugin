@@ -1,7 +1,8 @@
 import { BarkoderConstants } from "./barkoder-nativescript.common";
-import { View } from "@nativescript/core";
+import { Color, View } from "@nativescript/core";
 import { ios } from "@nativescript/core/application";
 import { ImageSource } from '@nativescript/core';
+import { Utils } from '@nativescript/core';
 
 export class BarkoderViewIOS extends View {
   public bkdView: any;
@@ -620,6 +621,30 @@ export class BarkoderViewIOS extends View {
         return this.bkdView.config.decoderConfig.japanasePost.enabled;
       case BarkoderConstants.DecoderType.MaxiCode:
         return this.bkdView.config.decoderConfig.maxiCode.enabled;
+      case BarkoderConstants.DecoderType.OCRText:
+        return this.bkdView.config.decoderConfig.ocrText.enabled;
+    }
+  }
+
+  getSadlImageFromExtra(extra: any): ImageSource | null {
+    if (!extra) {
+      return null;
+    }
+
+    try {
+      const uiImage = BarkoderHelper.sadlImage(extra);
+
+      if (!uiImage) {
+        return null;
+      }
+
+      const imageSource = new ImageSource();
+      imageSource.setNativeSource(uiImage); // ✅ assign UIImage directly
+      return imageSource;
+
+    } catch (e) {
+      console.error('iOS SADL image failed:', e);
+      return null;
     }
   }
 
@@ -667,6 +692,7 @@ export class BarkoderViewIOS extends View {
     this.bkdView.config.decoderConfig.kix.enabled = false;
     this.bkdView.config.decoderConfig.japanesePost.enabled = false;
     this.bkdView.config.decoderConfig.maxiCode.enabled = false;
+    this.bkdView.config.decoderConfig.ocrText.enabled = false;
     decoders.forEach((dt: BarkoderConstants.DecoderType) => {
       switch (dt) {
         case BarkoderConstants.DecoderType.Aztec:
@@ -786,6 +812,9 @@ export class BarkoderViewIOS extends View {
         case BarkoderConstants.DecoderType.MaxiCode:
           this.bkdView.config.decoderConfig.maxiCode.enabled = true;
             break;
+        case BarkoderConstants.DecoderType.OCRText:
+          this.bkdView.config.decoderConfig.ocrText.enabled = true;
+          break;
         default:
           break;
       }
@@ -1319,6 +1348,10 @@ export class BarkoderViewIOS extends View {
     this.bkdView.config.decoderConfig.setcustomOptionValue(string, mode)
   }
 
+  setCustomOptionGlobal(string: string, mode: number): void {
+    this.bkdView.config.decoderConfig.setcustomOptionValue(string, mode)
+  }
+
   setLicenseKey(licenseKey: string): void {
     const config = new BarkoderConfig({
       licenseKey: licenseKey,
@@ -1490,6 +1523,224 @@ export class BarkoderViewIOS extends View {
    setResultDisappearanceDelayMs(ms : number) : void {
      this.bkdView.config.arConfig.resultDisappearanceDelayMs = ms
    }
+
+
+
+
+  configureFlashButton(
+    visible: boolean,
+    position: number[], // [xDp, yDp]
+    iconSize: number,
+    tintColor: string | Color | null,
+    backgroundColor: string | Color | null,
+    cornerRadius: number,
+    padding: number,
+    useCustomIcon: boolean,
+    flashOnIconBase64: string,
+    flashOffIconBase64: string
+  ): void {
+    if (!this.bkdView) {
+      return;
+    }
+
+    // ✅ Null-safe conversion of tintColor
+    const nativeTintColor = tintColor != null
+      ? (tintColor instanceof Color
+        ? tintColor
+        : new Color(tintColor as string)).ios
+      : null;
+
+    // ✅ Null-safe conversion of backgroundColor
+    const nativeBackgroundColor = backgroundColor != null
+      ? (backgroundColor instanceof Color
+        ? backgroundColor
+        : new Color(backgroundColor as string)).ios
+      : null;
+
+    // 2. Convert Position (JS number[] -> native CGPoint structure, wrapped in NSValue)
+    const cgPoint: CGPoint = { x: position[0], y: position[1] };
+    const nativePosition = NSValue.valueWithCGPoint(cgPoint);
+
+    // 3. Convert Base64 Strings to native UIImage
+    let nativeFlashOnImage: UIImage = null;
+    let nativeFlashOffImage: UIImage = null;
+
+    if (useCustomIcon) {
+      nativeFlashOnImage = this.decodeBase64ToImage(flashOnIconBase64);
+      nativeFlashOffImage = this.decodeBase64ToImage(flashOffIconBase64);
+    }
+
+    // 4. Call the native Swift/ObjC method
+    this.bkdView.configureFlashButtonWithVisiblePositionIconSizeTintColorBackgroundColorCornerRadiusPaddingUseCustomIconCustomIconFlashOnCustomIconFlashOff(
+      visible,
+      nativePosition,
+      iconSize,
+      nativeTintColor,
+      nativeBackgroundColor,
+      cornerRadius,
+      padding,
+      useCustomIcon,
+      nativeFlashOnImage,
+      nativeFlashOffImage
+    );
+  }
+
+
+   // --- Helper Method Definition (iOS equivalent of decodeBase64ToBitmap) ---
+  
+
+  configureCloseButton(
+    visible: boolean,
+    position: number[],
+    iconSize: number,
+    tintColor: string | Color | null,
+    backgroundColor: string | Color | null,
+    cornerRadius: number,
+    padding: number,
+    useCustomIcon: boolean,
+    customIcon: string,
+    onClose?: () => void
+  ): void {
+    if (!this.bkdView) {
+      return;
+    }
+
+    // ✅ Safely handle nullable tintColor
+    const nativeTintColor = tintColor != null
+      ? (tintColor instanceof Color
+        ? tintColor
+        : new Color(tintColor as string)).ios
+      : null;
+
+    // ✅ Safely handle nullable backgroundColor
+    const nativeBackgroundColor = backgroundColor != null
+      ? (backgroundColor instanceof Color
+        ? backgroundColor
+        : new Color(backgroundColor as string)).ios
+      : null;
+
+    const cgPoint: CGPoint = { x: position[0], y: position[1] };
+    const nativePosition = NSValue.valueWithCGPoint(cgPoint);
+
+    let customIconImage: UIImage = null;
+    if (useCustomIcon) {
+      customIconImage = this.decodeBase64ToImage(customIcon);
+    }
+
+    const nativeOnClose = onClose ? () => {
+      onClose();
+    } : null;
+
+    this.bkdView.configureCloseButtonWithVisiblePositionIconSizeTintColorBackgroundColorCornerRadiusPaddingUseCustomIconCustomIconOnClose(
+      visible,
+      nativePosition,
+      iconSize,
+      nativeTintColor,
+      nativeBackgroundColor,
+      cornerRadius,
+      padding,
+      useCustomIcon,
+      customIconImage,
+      nativeOnClose
+    );
+  }
+
+
+
+
+
+  configureZoomButton(
+    visible: boolean,
+    position: number[], // [xDp, yDp]
+    iconSize: number,
+    tintColor: string | Color | null,
+    backgroundColor: string | Color | null,
+    cornerRadius: number,
+    padding: number,
+    useCustomIcon: boolean,
+    zoomInIconBase64: string,
+    zoomOutIconBase64: string,
+    zoomedInFactor: number,
+    zoomedOutFactor: number
+  ): void {
+    if (!this.bkdView) {
+      return;
+    }
+
+    // ✅ 1. Null-safe conversion of tintColor
+    const nativeTintColor = tintColor != null
+      ? (tintColor instanceof Color
+        ? tintColor
+        : new Color(tintColor as string)).ios
+      : null;
+
+    // ✅ 2. Null-safe conversion of backgroundColor
+    const nativeBackgroundColor = backgroundColor != null
+      ? (backgroundColor instanceof Color
+        ? backgroundColor
+        : new Color(backgroundColor as string)).ios
+      : null;
+
+    // 3. Convert Position (JS number[] -> native CGPoint, wrapped in NSValue)
+    const cgPoint: CGPoint = { x: position[0], y: position[1] };
+    const nativePosition = NSValue.valueWithCGPoint(cgPoint);
+
+    // 4. Convert Base64 Strings to native UIImage
+    let nativeZoomInImage: UIImage = null;
+    let nativeZoomOutImage: UIImage = null;
+
+    if (useCustomIcon) {
+      nativeZoomInImage = this.decodeBase64ToImage(zoomInIconBase64);
+      nativeZoomOutImage = this.decodeBase64ToImage(zoomOutIconBase64);
+    }
+
+    // 5. Call the native iOS method
+    this.bkdView.configureZoomButtonWithVisiblePositionIconSizeTintColorBackgroundColorCornerRadiusPaddingUseCustomIconCustomIconZoomedInCustomIconZoomedOutZoomedInFactorZoomedOutFactor(
+      visible,
+      nativePosition,
+      iconSize,
+      nativeTintColor,
+      nativeBackgroundColor,
+      cornerRadius,
+      padding,
+      useCustomIcon,
+      nativeZoomInImage,
+      nativeZoomOutImage,
+      zoomedInFactor,
+      zoomedOutFactor
+    );
+  }
+
+
+  // --- Required Helper Method (Must be defined in your class) ---
+
+  /**
+   * Decodes a Base64 string into a native UIImage object.
+   * This is the iOS equivalent of decodeBase64ToBitmap used in Android.
+   */
+  private decodeBase64ToImage(base64String: string): UIImage {
+    if (!base64String) {
+      return null;
+    }
+
+    // Remove potential header (e.g., "data:image/png;base64,")
+    const cleanString = base64String.replace(/^data:image\/(png|jpeg);base64,/, '');
+
+    // Convert Base64 string to NSData
+    const nsData = NSData.alloc().initWithBase64EncodedStringOptions(
+      cleanString,
+      NSDataBase64DecodingOptions.NSDataBase64DecodingIgnoreUnknownCharacters
+    );
+
+    if (nsData) {
+      // Convert NSData to UIImage
+      return UIImage.imageWithData(nsData);
+    }
+
+    return null;
+  }
+
+
 
   setARResultLimit(resultLimit: number): void {
     this.bkdView.config.arConfig.resultLimit = resultLimit
