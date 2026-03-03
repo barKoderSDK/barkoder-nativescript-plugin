@@ -320,6 +320,14 @@ export class BarkoderViewIOS extends View {
     return this.bkdView.config.locationInImageResultEnabled;
   }
 
+    getPowerSavingMode(): number {
+    return this.bkdView.config.powerSavingMode;
+  }
+
+    setPowerSavingMode(mode: number): void {
+    this.bkdView.config.powerSavingMode = mode;
+  }
+
   /**
    * Retrieves the region of interest (ROI)
    */
