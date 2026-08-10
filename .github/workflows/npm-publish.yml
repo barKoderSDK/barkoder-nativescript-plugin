@@ -4,16 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
-    inputs:
-      publish_mode:
-        description: Select auth mode for manual publish
-        required: true
-        default: trusted
-        type: choice
-        options:
-          - trusted
-          - token
 
 permissions:
   contents: read
@@ -36,12 +26,5 @@ jobs:
       - name: Verify package
         run: npm publish --dry-run --ignore-scripts --access public
 
-      - name: Publish to npm (trusted publishing)
-        if: ${{ github.event_name == 'push' || inputs.publish_mode == 'trusted' }}
-        run: npm publish --ignore-scripts --access public
-
-      - name: Publish to npm (token fallback)
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_mode == 'token' }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm
         run: npm publish --ignore-scripts --access public
