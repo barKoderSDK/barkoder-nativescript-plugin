@@ -5,6 +5,15 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      publish_mode:
+        description: Select auth mode for manual publish
+        required: true
+        default: trusted
+        type: choice
+        options:
+          - trusted
+          - token
 
 permissions:
   contents: read
@@ -22,9 +31,17 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+          package-manager-cache: false
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Publish to npm (trusted publishing)
-        run: npm publish --provenance --access public
+        if: ${{ github.event_name == 'push' || inputs.publish_mode == 'trusted' }}
+        run: npm publish --access public
+
+      - name: Publish to npm (token fallback)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_mode == 'token' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
