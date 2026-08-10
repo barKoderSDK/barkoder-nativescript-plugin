@@ -1,4 +1,4 @@
-name: Publish package to npm
+name: Publish to npm
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
           package-manager-cache: false
 
       - name: Verify package
-        run: npm publish --dry-run --ignore-scripts --access public
+        run: npm publish --dry-run --ignore-scripts
 
       - name: Publish to npm
-        run: npm publish --ignore-scripts --access public
+        run: npm publish --ignore-scripts
