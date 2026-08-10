@@ -10,7 +10,10 @@
 			"ios": "6.0.1"
 		}
 	},
-	"repository": "https://barkoder.com",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/barKoderSDK/barkoder-nativescript-plugin.git"
+	},
 	"scripts": {
 		"tsc": "npm i && tsc",
 		"build": "npm run tsc && npm run build.native",
