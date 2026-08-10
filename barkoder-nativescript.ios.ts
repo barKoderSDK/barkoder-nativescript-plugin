@@ -481,6 +481,9 @@ export class BarkoderViewIOS extends View {
       case BarkoderConstants.FormattingType.SADL:
         this.bkdView.config.decoderConfig.formatting = 4;
           break;
+      case BarkoderConstants.FormattingType.BCBP:
+        this.bkdView.config.decoderConfig.formatting = 5;
+          break;
     }
   }
 
@@ -1397,6 +1400,8 @@ export class BarkoderViewIOS extends View {
        this.bkdView.config.arConfig.arMode = 2
      } else if (arMode == BarkoderConstants.BarkoderARMode.NonInteractive) {
        this.bkdView.config.arConfig.arMode = 3
+     } else if (arMode == BarkoderConstants.BarkoderARMode.MatchFilter) {
+       this.bkdView.config.arConfig.arMode = 4
      }
    }
  
@@ -1798,6 +1803,49 @@ export class BarkoderViewIOS extends View {
      return this.bkdView.config.arConfig.headerTextFormat
    }
 
+  setRoiCenterMark(roiCenterMark: number): void {
+    this.bkdView.config.roiCenterMark = roiCenterMark;
+  }
+
+  getRoiCenterMark(): number {
+    return this.bkdView.config.roiCenterMark;
+  }
+
+  resetARCache(): void {
+    this.bkdView.resetARCache();
+  }
+
+  setARReturnOnlyMatchedResults(enabled: boolean): void {
+    this.bkdView.config.arConfig.returnOnlyMatchedResults = enabled;
+  }
+
+  getARReturnOnlyMatchedResults(): boolean {
+    return this.bkdView.config.arConfig.returnOnlyMatchedResults;
+  }
+
+  setARDisplayOnlyMatchedResults(enabled: boolean): void {
+    this.bkdView.config.arConfig.displayOnlyMatchedResults = enabled;
+  }
+
+  getARDisplayOnlyMatchedResults(): boolean {
+    return this.bkdView.config.arConfig.displayOnlyMatchedResults;
+  }
+
+  setDecoderMatchFilter(filter: string): void {
+    this.bkdView.config.decoderConfig.matchFilter = filter;
+  }
+
+  getDecoderMatchFilter(): string {
+    return this.bkdView.config.decoderConfig.matchFilter;
+  }
+
+  setDecoderReturnOnlyMatchedResults(enabled: boolean): void {
+    this.bkdView.config.decoderConfig.returnOnlyMatchedResults = enabled;
+  }
+
+  getDecoderReturnOnlyMatchedResults(): boolean {
+    return this.bkdView.config.decoderConfig.returnOnlyMatchedResults;
+  }
 
   /**
    * Configures the Barkoder functionality based on the provided configuration

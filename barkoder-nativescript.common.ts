@@ -70,7 +70,8 @@ export enum FormattingType {
   Automatic = 1,
   GS1 = 2,
   AAMVA = 3,
-  SADL = 4
+  SADL = 4,
+  BCBP = 5
 }
 
 export enum DecodingSpeed {
@@ -117,7 +118,8 @@ export enum Code39ChecksumType {
     OFF = 0,
     InteractiveDisabled = 1,
     InteractiveEnabled = 2,
-    NonInteractive = 3
+    NonInteractive = 3,
+    MatchFilter = 4
   }
 
   export enum BarkoderARHeaderShowMode {
@@ -135,6 +137,12 @@ export enum Code39ChecksumType {
   export enum BarkoderAROverlayRefresh {
     SMOOTH = 0,
     NORMAL = 1
+  }
+
+  export enum BarkoderRoiCenterMark {
+    NONE = 0,
+    CROSSHAIR = 1,
+    POINT = 2
   }
 
 export class Common extends Observable {

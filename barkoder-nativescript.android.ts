@@ -542,6 +542,9 @@ createNativeView(): Object {
         case BarkoderConstants.FormattingType.SADL:
           this.bkdView.config.getDecoderConfig().formattingType = com.barkoder.Barkoder.FormattingType.SADL;
           break;
+        case BarkoderConstants.FormattingType.BCBP:
+          this.bkdView.config.getDecoderConfig().formattingType = com.barkoder.Barkoder.FormattingType.BCBP;
+          break;
       }
     });
   }
@@ -1289,6 +1292,8 @@ createNativeView(): Object {
         this.bkdView.config.arConfig.arMode = com.barkoder.enums.BarkoderARMode.InteractiveEnabled;
       } else if (arMode == BarkoderConstants.BarkoderARMode.NonInteractive) {
         this.bkdView.config.arConfig.arMode = com.barkoder.enums.BarkoderARMode.NonInteractive;
+      } else if (arMode == BarkoderConstants.BarkoderARMode.MatchFilter) {
+        this.bkdView.config.arConfig.arMode = com.barkoder.enums.BarkoderARMode.MatchFilter;
       }
     });
   }
@@ -1548,6 +1553,70 @@ createNativeView(): Object {
   getARHeaderTextFormat(format: string): any {
     if (!this.bkdView) return null;
     return this.bkdView.config.arConfig.getHeaderTextFormat(format);
+  }
+
+  setRoiCenterMark(roiCenterMark: number): void {
+    this._runWhenReady(() => {
+      let nativeRoiCenterMark: any;
+      switch (roiCenterMark) {
+        case BarkoderConstants.BarkoderRoiCenterMark.CROSSHAIR:
+          nativeRoiCenterMark = com.barkoder.enums.BarkoderRoiCenterMark.CROSSHAIR;
+          break;
+        case BarkoderConstants.BarkoderRoiCenterMark.POINT:
+          nativeRoiCenterMark = com.barkoder.enums.BarkoderRoiCenterMark.POINT;
+          break;
+        case BarkoderConstants.BarkoderRoiCenterMark.NONE:
+        default:
+          nativeRoiCenterMark = com.barkoder.enums.BarkoderRoiCenterMark.NONE;
+          break;
+      }
+      this.bkdView.config.setRoiCenterMark(nativeRoiCenterMark);
+    });
+  }
+
+  getRoiCenterMark(): any {
+    if (!this.bkdView) return null;
+    return this.bkdView.config.getRoiCenterMark();
+  }
+
+  resetARCache(): void {
+    this._runWhenReady(() => { this.bkdView.resetArCache(); });
+  }
+
+  setARReturnOnlyMatchedResults(enabled: boolean): void {
+    this._runWhenReady(() => { this.bkdView.config.arConfig.returnOnlyMatchedResults = enabled; });
+  }
+
+  getARReturnOnlyMatchedResults(): any {
+    if (!this.bkdView) return null;
+    return this.bkdView.config.arConfig.returnOnlyMatchedResults;
+  }
+
+  setARDisplayOnlyMatchedResults(enabled: boolean): void {
+    this._runWhenReady(() => { this.bkdView.config.arConfig.displayOnlyMatchedResults = enabled; });
+  }
+
+  getARDisplayOnlyMatchedResults(): any {
+    if (!this.bkdView) return null;
+    return this.bkdView.config.arConfig.displayOnlyMatchedResults;
+  }
+
+  setDecoderMatchFilter(filter: string): void {
+    this._runWhenReady(() => { this.bkdView.config.getDecoderConfig().matchFilter = filter; });
+  }
+
+  getDecoderMatchFilter(): any {
+    if (!this.bkdView) return null;
+    return this.bkdView.config.getDecoderConfig().matchFilter;
+  }
+
+  setDecoderReturnOnlyMatchedResults(enabled: boolean): void {
+    this._runWhenReady(() => { this.bkdView.config.getDecoderConfig().returnOnlyMatchedResults = enabled; });
+  }
+
+  getDecoderReturnOnlyMatchedResults(): any {
+    if (!this.bkdView) return null;
+    return this.bkdView.config.getDecoderConfig().returnOnlyMatchedResults;
   }
 
   configureBarkoder(config: BarkoderConstants.BarkoderConfig): void {
