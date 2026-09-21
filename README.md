@@ -1,161 +1,72 @@
-# barKoder Barcode Scanner SDK for NativeScript
+# barKoder NativeScript Barcode Scanner Plugin
 
-## Add an enterprise-grade barcode scanning engine in your [NativeScript](https://barkoder.com/barcode-scanner-sdk/frameworks/nativescript) app 
+Add native barcode scanning to **NativeScript applications for Android and iOS** with the official barKoder NativeScript plugin. It exposes the barKoder native scanning engine to NativeScript projects, making it possible to build embedded camera-based barcode capture without relying on a separate scanner application or dedicated scanning device.
 
-Integrating the [barKoder Barcode Scanner SDK](https://barkoder.com) into your Enterprise or Consumer-facing mobile apps will instantly transform your user's smarphones and tablets into rugged barcode scanning devices without the need to procure and maintain expensive and sluggish hardware devices that have a very short life span.
+The plugin is intended for production applications that need reliable decoding of everyday barcode formats and advanced scanning capabilities for demanding logistics, manufacturing, retail, automotive and identity workflows.
 
-barKoder is a cutting-edge data capture solution built for modern enterprise use cases — delivering AI-powered computer vision, ultra-fast recognition, and industry-leading performance even in the most challenging real-world conditions.
+## Quick links
 
----------------------------------------------
-## 🚀 Why barKoder?
+- **NativeScript Barcode Scanner SDK:** [https://barkoder.com/barcode-scanner-sdk/frameworks/nativescript](https://barkoder.com/barcode-scanner-sdk/frameworks/nativescript)
+- **npm package:** [https://www.npmjs.com/package/barkoder-nativescript](https://www.npmjs.com/package/barkoder-nativescript)
+- **Installation guide:** [https://barkoder.com/docs/v1/nativescript/nativescript-installation](https://barkoder.com/docs/v1/nativescript/nativescript-installation)
+- **Example:** [https://barkoder.com/docs/v1/nativescript/nativescript-example](https://barkoder.com/docs/v1/nativescript/nativescript-example)
+- **API reference:** [https://barkoder.com/docs/v1/nativescript/nativescript-api-reference](https://barkoder.com/docs/v1/nativescript/nativescript-api-reference)
+- **Full demo app:** [https://github.com/barKoderSDK/barkoder-native-script-full-demo-app](https://github.com/barKoderSDK/barkoder-native-script-full-demo-app)
+- **Free trial:** [https://barkoder.com/trial](https://barkoder.com/trial)
 
-barKoder is a production-ready scanning engine trusted across industries such as:
- - Logistics & Supply Chain
- - Manufacturing & Direct Part Marking (DPM)
- - Retail & Self-Checkout
- - Automotive & VIN Capture
- - Identity Verification (MRZ + OCR)
+## Key capabilities
 
-### Key [barKoder SDK](https://barkoder.com/) capabilities include:
+barKoder is designed for production barcode capture workflows where speed and decode reliability matter. Depending on the license and configuration, the SDK supports capabilities such as:
 
-* [DPM Mode](https://barkoder.com/barcode-scanner-sdk/dpm) - Specially designed scanning template for decoding Data Matrix barcodes engraved using any Direct Part Marking (DPM) technique;
-* [MatrixSight](https://barkoder.com/barcode-scanner-sdk/matrixsight) - Proprietary algorithm that can successfully scan QR Codes or Data Matrix barcodes even when they are missing their finder, timing and/or alignment patterns, even part of the data elements;
-* [Segment Decoding](https://barkoder.com/barcode-scanner-sdk/segment-decoding) - The advanced barcode localization techniques implemented into the barKoder SDK grants an ability to recognize 1D barcodes that have significant deformations along their Z axis, getting especially handy when trying to recognize barcodes found on test tubes, bottles and other surfaces with rounded, curved, hollowed or otherwise irregular shapes;
-* [VIN Barcode Scanning Mode](https://barkoder.com/barcode-scanner-sdk/vin-scanning) - The most advanced VIN barcode scanning mode on the market, utilizing all the special algorithms of the barKoder SDK leading to the ultimate scanning experience of any kind of barcodes used for embedding Vehicle Identification Numbers, including Code 39, Code 128, QR Code and Data Matrix;
-* [DeBlur Mode](https://barkoder.com/barcode-scanner-sdk/deblur) - Whether there's lens, motion or focus blur present in EAN or UPC barcodes, the barKoder DeBlur Mode alleviates it fully and doesn't allow the scanning experience to suffer;
-* [PDF417-LineSight](https://barkoder.com/barcode-scanner-sdk/pdf417-linesight) - The robust PDF417 barcode scanner SDK that is offered by barKoder can detect even the most severely damaged PDF417 codes, including missing their start and stop patterns, stop row indicators or even entire data columns, making it the sublime choice for apps that need to reliably scan US or Canadian driver's licenses, South African vehicle license discs or driver's licenses, as well as various types of ID's such as Military, Argentinian, Colombian or South African Smart ID Cards.
-* [Barch MultiScan](https://barkoder.com/barcode-scanner-sdk/batch-multiscan) - Want to scan multiple barcodes regardless of type and density continuously? Look no further than barKoder's Batch MultiScan feature, whose result caching and location reconstruction techniques provide excellent user-experience and results.
-* [Continuous Scanning](https://barkoder.com/barcode-scanner-sdk/continuous-scanning) - barKoder’s advanced engine seamlessly captures data from multiple barcodes in real-time, enabling uninterrupted scanning workflows that boost efficiency and accuracy. Unlike traditional methods that require individual scans for each barcode, barKoder’s continuous scanning technology ensures faster data collection and processing, making it an ideal choice for high-volume scanning environments where speed and precision are critical.
-* [MRZ Scanning](https://barkoder.com/barcode-scanner-sdk/mrz) - The barKoder MRZ Scanning SDK enables fast and accurate extraction of Machine Readable Zone (MRZ) data from passports, ID cards, and travel documents. Built with advanced computer vision and OCR technology, it delivers reliable performance even in challenging conditions such as low light, glare, or motion.
-* [Augmented Reality Overlays](https://barkoder.com/barcode-scanner-sdk/augmented-reality) - barKoder’s Augmented Reality overlays bring barcode data to life by displaying real-time, contextual information directly on top of scanned items. From inventory counts to expiration dates and custom labels, your users see what matters—instantly, visually, and interactively.
+- 30+ 1D and 2D barcode symbologies, including QR Code, Data Matrix, PDF417, Code 128, Code 39, EAN/UPC, Aztec, DotCode and GS1 formats
+- [Direct Part Marking (DPM) scanning](https://barkoder.com/barcode-scanner-sdk/dpm) for difficult Data Matrix codes on metal, plastic and other industrial surfaces
+- [Batch MultiScan](https://barkoder.com/barcode-scanner-sdk/batch-multiscan) for decoding multiple barcodes in a single camera view
+- [VIN barcode scanning](https://barkoder.com/barcode-scanner-sdk/vin-scanning) for automotive workflows
+- [MRZ scanning](https://barkoder.com/barcode-scanner-sdk/mrz) for passports, ID cards and travel documents
+- Continuous scanning, image/gallery scanning and configurable regions of interest
+- Advanced decoding for damaged, deformed, low-quality and blurry barcodes
+- On-device scanning for normal mobile scanning workflows
 
---------------------------------------
-## 📌 Supported Barcode Symbologies
+For the complete feature set and platform-specific configuration options, use the official documentation linked below.
 
-barKoder supports 30+ symbologies including:
 
-1D - [Codabar](https://barkoder.com/barcode-types/codabar), [Code 11](https://barkoder.com/barcode-types/code-11), [Code 25](https://barkoder.com/barcode-types/code-25), [Code 32](https://barkoder.com/barcode-types/code-32), [Code 39](https://barkoder.com/barcode-types/code-39), [Code 93](https://barkoder.com/barcode-types/code-93), [Code 128](https://barkoder.com/barcode-types/code-128), [DataBar](https://barkoder.com/barcode-types/databar),  [EAN-8](https://barkoder.com/barcode-types/ean-upc-code), [EAN-13](https://barkoder.com/barcode-types/ean-upc-code), [GS1 Composite](https://barkoder.com/barcode-types/gs1-composite), [Interleaved 2 of 5](https://barkoder.com/barcode-types/code-25), [ITF-14](https://barkoder.com/barcode-types/code-25), [MSI Plessey](https://barkoder.com/barcode-types/msi-plessey), [Postal Barcodes](https://barkoder.com/barcode-types/postal-barcodes), [Telepen](https://barkoder.com/barcode-types/telepen), [UPC-A](https://barkoder.com/barcode-types/ean-upc-code) & [UPC-E](https://barkoder.com/barcode-types/ean-upc-code)
+## Installation
 
-2D - [Aztec Code](https://barkoder.com/barcode-types/aztec), [Aztec Compact](https://barkoder.com/barcode-types/aztec), [Data Matrix](https://barkoder.com/barcode-types/data-matrix), [PDF417](https://barkoder.com/barcode-types/pdf417), [MaxiCode](https://barkoder.com/barcode-types/maxicode), [Micro PDF417](https://barkoder.com/barcode-types/pdf417), [DotCode](https://barkoder.com/barcode-types/dotcode), [QR Code](https://barkoder.com/barcode-types/qr-code) & [Micro QR Code](https://barkoder.com/barcode-types/qr-code)
+Install the package from npm:
 
------------------------------------------
-## 📱 Demo Apps
+```bash
+npm install barkoder-nativescript
+```
 
-Try barKoder in action:
+Complete the Android/iOS project configuration and permissions using the [NativeScript installation guide](https://barkoder.com/docs/v1/nativescript/nativescript-installation).
 
-iOS Demo App:
-https://apps.apple.com/us/app/barkoder-scanner/id6443715409
+The plugin exposes barKoder constants and view functionality through the NativeScript package. Use the current [NativeScript example](https://barkoder.com/docs/v1/nativescript/nativescript-example) rather than copying API calls from older starter applications.
 
-Android Demo App:
-https://play.google.com/store/apps/details?id=com.barkoder.demoscanner
+## Examples
 
-------------------------------------------
-## 📚 Official NativeScript Documentation
+- [NativeScript integration example](https://barkoder.com/docs/v1/nativescript/nativescript-example)
+- [NativeScript API reference](https://barkoder.com/docs/v1/nativescript/nativescript-api-reference)
+- [Full NativeScript demo app](https://github.com/barKoderSDK/barkoder-native-script-full-demo-app)
 
-The NativeScript SDK is fully documented here:
+## Trial license
 
-Installation Guide
+You can evaluate barKoder in your own application with a free trial license:
 
-https://barkoder.com/docs/v1/nativescript/nativescript-installation
+**[Get a free barKoder SDK trial](https://barkoder.com/trial)**
 
-API Reference 
+The SDK can be initialized without a valid license for integration testing, but decoded results may be partially masked or marked as unlicensed. Use a valid trial or production license for complete results and licensed functionality.
 
-https://barkoder.com/docs/v1/nativescript/nativescript-api-reference
+Do not publish a trial license in a production application or public source repository.
 
-NativeScript Examples
 
-https://barkoder.com/docs/v1/nativescript/nativescript-example
+## Support
 
-----------------------------------
-## Trial License
+Need help with integration or testing?
 
-If you run the barKoder Barcode Scanner SDK without a valid trial or production license, all results upon successful barcode scans will be partially masked by asterisks (*). You can get a trial license simply by [registering on the barKoder Portal](https://barkoder.com/register) and utilizing the self-service for Evaluation License Generation! Each trial license will be good for an initial duration of 30 days and can be deployed to up to 25 devices. For any custom requirements, contact our sales team via sales@barkoder.com
+- Documentation: [https://barkoder.com/docs/v1/home](https://barkoder.com/docs/v1/home)
+- Technical support: [support@barkoder.com](mailto:support@barkoder.com)
+- Sales and licensing: [sales@barkoder.com](mailto:sales@barkoder.com)
 
-Note that a trial license is only supposed to be utilized in a development or staging environment. IF you decide to publish a trial license along with your app to the App Store, Play Store or any public store we won't be held accountable for any potential consequences. 
+## License
 
-------------------------------
-
-## Free Developer Support
-
-Our support is completely free for integration or testing purposes and granted through the [barKoder Developer Portal](https://barkoder.com/register). After registering and logging into your account, you only need to submit a Support Issue. Alternatively, you can contact us by email via support@barkoder.com
-
----------------------------------------
-
-## Installation Guide for barKoder's Nativescript Barcode Reader SDK
-
-This is a guide for the barKoder [NativeScript Plugin]
-
-### 1. Prepare environment
-Install the dependencies and [setup your environment](https://docs.nativescript.org/setup)
-
-### 2. Add our barkoder-nativescript package
-To add the **barkoder-nativescript** package to your project, you have two options. You can either use the **barkoder-nativescript** package from **npm** or from a local path.
-
-To use the package from [npm](https://www.npmjs.com/package/barkoder-nativescript) run this command:
-    
-   ```c
-    npm i barkoder-nativescript
-   ```
-
-   if you are using **NPM** in your project.
-
-If you prefer to use a local package, download the package from [https://barkoder.com](https://barkoder.com/repository), unzip the archive and add the package with setting the package path    
-
-   ```
-    tns plugin add <path to barkoder-nativescript package>
-   ```   
-
-### 3. Import package
-Import the **Barkoder Constants** in your project with:
-   ```typescript 
-    import { BarkoderConstants } from 'barkoder-nativescript/barkoder-nativescript.common';
-   ```
-
-### 4. BarkoderView
-At this point the **barkoder-nativescript** package is installed and imported in your project. Next step is to add the **BarkoderView** in your layout.
-   ```xml
-   
-   <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo"
-      xmlns:Barkoder="barkoder-nativescript/barkoder-nativescript.common">
-      ...
-
-      <Barkoder:BarkoderView id="barkoderView"  class="scanner-container" width="100%" height="70%"/>
-
-      ...
-
-   ```
-
-### 5. Init BarkoderView in ViewModel and set the License Key
-Inside **View-Model** we need to init a BarkoderView from layout xml.
-   ```typescript 
-  export class HelloWorldModel extends Observable implements BarkoderConstants.BarkoderResultCallback {
-  private barkoderView : any
-  constructor(args) {
-    super()
-   
-    this.barkoderView = args.object.page.getViewById('barkoderView');
-    this.barkoderView.setLicenseKey("License_Key")
-  
-  }
-  scanningFinished(results: any[], thumbnails: any[], resultImage: any): void {
-    console.log(`${results[0].textualData}`)
-    console.log(`${results[0].barcodeTypeName}`)
-  }
-   ```
-
-### 6. Ready to Scan Event
-SDK is fully initialized and ready for configuration or to start the scanning process.
-   ```typescript
-   
-   this.barkoderView.startScanning(this)
-
-   ```
-   For the complete usage of the **barkoder-nativescript** package please check our sample.
-
-### 7. Camera permissions
-Our SDK requires camera permission to be granted in order to use scanning features.On Android, you specify the permissions in App_Resources/Android/src/main/AndroidManifest.xml. However, this plugin specifies the required permissions for you. [@nativescript/camera](https://www.npmjs.com/package/@nativescript/camera)
- . For iOS you need to specify camera permission in **Info.plist** file inside your project
-   ```swift 
-    <key>NSCameraUsageDescription</key>
-      <string>Camera permission</string>
-   ```
+See the `LICENSE` file in this repository for the terms applicable to the repository contents. Use of the barKoder SDK itself is subject to the applicable barKoder license agreement.

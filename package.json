@@ -1,6 +1,6 @@
 {
 	"name": "barkoder-nativescript",
-	"version": "1.7.1",
+	"version": "1.7.2",
 	"description": "Nativescript support for Barkoder - a Barcode Scanner SDK for the modern enterprise.",
 	"main": "barkoder-nativescript",
 	"typings": "index.d.ts", 
@@ -10,10 +10,7 @@
 			"ios": "6.0.1"
 		}
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/barKoderSDK/barkoder-nativescript-plugin.git"
-	},
+	"repository": "https://barkoder.com",
 	"scripts": {
 		"tsc": "npm i && tsc",
 		"build": "npm run tsc && npm run build.native",

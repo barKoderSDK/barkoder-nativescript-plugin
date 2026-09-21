@@ -21,6 +21,7 @@ export class BarkoderViewAndroid extends View {
   public bkdConfig: any;
   public bkdHelper: any;
     private _pendingPowerSavingMode: number = null;
+  private _pendingPreviewMirrored: boolean = null;
   private _pendingLicenseKey: string;
   private _pendingSettings: Array<() => void> = [];
   private _isNativeViewReady = false;
@@ -175,6 +176,18 @@ createNativeView(): Object {
 
   setFlashEnabled(enabled: boolean): void {
     this._runWhenReady(() => { this.bkdView.setFlashEnabled(enabled); });
+  }
+
+  setPreviewMirrored(mirrored: boolean = true): void {
+    this._pendingPreviewMirrored = mirrored;
+    this._runWhenReady(() => { this.bkdView.setPreviewMirrored(mirrored); });
+  }
+
+  isPreviewMirrored(): boolean {
+    if (!this.bkdView) {
+      return this._pendingPreviewMirrored === true;
+    }
+    return this.bkdView.isPreviewMirrored();
   }
 
   setARContinueScanningOnLimit(enabled: boolean): void {

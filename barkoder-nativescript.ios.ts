@@ -95,6 +95,14 @@ export class BarkoderViewIOS extends View {
     this.bkdView.setFlash(enabled);
   }
 
+  setPreviewMirrored(mirrored: boolean = true): void {
+    this.bkdView.previewMirrored = mirrored;
+  }
+
+  isPreviewMirrored(): boolean {
+    return this.bkdView.previewMirrored;
+  }
+
   captureImage(): void {
     this.bkdView.captureImage();
   }
